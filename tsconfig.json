@@ -1,5 +1,35 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/styles/*": [
+        "src/styles/*"
+      ],
+      "@/svelte/*": [
+        "src/components/islands/svelte/*"
+      ],
+      "@/layouts/*": [
+        "src/components/layouts/*"
+      ],
+      "@/stores/*": [
+        "src/stores/*"
+      ],
+      "@/helpers/*": [
+        "src/helpers/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
+      ]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  }
 }

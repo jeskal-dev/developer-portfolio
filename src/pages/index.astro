@@ -1,11 +1,20 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "@/components/astro/layouts/layout.astro";
+import Button from "@/components/preact/ui/button";
+import Card from "@/components/preact/ui/card";
 ---
 
 <Layout>
-	<Welcome />
+  <Card>
+    <Card.Header title="Title" subtitle="sub" />
+    <Card.Body>Contenido</Card.Body>
+    <Card.Footer>
+      <Card.Footer.Right>
+        <div class="flex gap-2">
+          <Button variant="primary" client:idle>Confirm</Button>
+          <Button variant="outline">Error</Button>
+        </div>
+      </Card.Footer.Right>
+    </Card.Footer>
+  </Card>
 </Layout>
