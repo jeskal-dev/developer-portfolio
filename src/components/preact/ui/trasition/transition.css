@@ -1,0 +1,95 @@
+.transition-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.transition {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-fill-mode: both;
+}
+
+.fade {
+  animation-name: fade;
+}
+
+.slide {
+  animation-name: slide;
+}
+
+.scale {
+  animation-name: scale;
+}
+
+.rotate {
+  animation-name: rotate;
+}
+
+.flip {
+  animation-name: flip;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes flip {
+  from {
+    opacity: 0;
+    transform: rotateY(-90deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+}
