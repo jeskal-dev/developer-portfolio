@@ -98,23 +98,26 @@ function DialogDescription({
 function DialogCloseTrigger({
   children,
   className,
+  asChild,
   ...rest
 }: React.ComponentProps<typeof Dialog.CloseTrigger>) {
   return (
-    <Dialog.CloseTrigger {...rest}>
-      {children ?? (
+    <Dialog.CloseTrigger asChild {...rest}>
+      {!asChild ? (
         <Button
           shape="flat"
+          variant="accent"
+          animation="bounce"
           className={cn([
             "absolute right-0 top-0 px-5 py-1.5 transform scale-x-[-1] drop-shadow-[0_0px_20px_var(--color-accent)]",
-            "[--color-frame-1-stroke:var(--color-accent)]",
-            "[--color-frame-1-fill:var(--color-accent)]/50",
             className,
           ])}
           {...rest}
         >
           <X className="size-4" />
         </Button>
+      ) : (
+        children
       )}
     </Dialog.CloseTrigger>
   );
