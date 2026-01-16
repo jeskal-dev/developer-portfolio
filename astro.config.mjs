@@ -26,9 +26,12 @@ export default defineConfig({
         "@/components": path.resolve(__dirname, "./src/components"),
         "@/stores": path.resolve(__dirname, "./src/stores"),
         "@/helpers": path.resolve(__dirname, "./src/helpers"),
+        "@lucide/preact": "lucide-preact",
+        react: "preact/compat",
+        "react-dom": "preact/compat",
       },
     },
   },
 
-  integrations: [svelte(), preact()],
+  integrations: [svelte(), preact({ compat: true })],
 });
