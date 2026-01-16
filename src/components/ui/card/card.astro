@@ -1,0 +1,16 @@
+---
+import Button from "../button/button.astro";
+import Frame from "../frame/frame.svelte";
+import { cardShape, cardStyles } from "./card.style";
+---
+
+<div class={cardStyles}>
+  <Frame
+    class="drop-shadow-2xl drop-shadow-primary/50"
+    paths={cardShape}
+    client:load
+  />
+  <div class="relative px-12 py-14">
+    <slot />
+  </div>
+</div>

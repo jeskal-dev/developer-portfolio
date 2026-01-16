@@ -1,6 +1,5 @@
 import { useRef, type ReactNode } from "preact/compat";
 import "./transition.css";
-
 type TransitionType = "fade" | "slide" | "scale" | "rotate" | "flip";
 
 type TransitionItems<T extends string = string> =

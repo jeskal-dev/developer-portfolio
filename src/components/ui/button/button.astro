@@ -1,0 +1,43 @@
+---
+import { cn } from "@/helpers/classname";
+import Frame from "../frame/frame.svelte";
+import { buttonVariants, flatPaths, simplePaths } from "./button.styles";
+import type { ButtonProps } from "./button.types";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = ButtonProps & HTMLAttributes<"button">;
+
+const {
+  class: className,
+  children,
+  variant = "default",
+  shape = "default",
+  animation,
+  enableBackdropBlur = false,
+  enableViewBox = false,
+  customPaths,
+  ...props
+} = Astro.props;
+---
+
+<button
+  {...props}
+  class={cn(buttonVariants({ variant, shape, className, animation }))}
+>
+  <div class="absolute inset-0 -mb-2">
+    {
+      !customPaths && (shape == "default" || shape == "flat") && (
+        <Frame paths={flatPaths} client:load />
+      )
+    }
+    {
+      !customPaths && shape == "simple" && (
+        <Frame paths={simplePaths} client:load />
+      )
+    }
+    {customPaths?.map((customPath) => <Frame paths={customPath} client:load />)}
+  </div>
+  <span>
+    <slot />
+  </span>
+</button>
