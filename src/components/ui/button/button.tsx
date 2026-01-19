@@ -17,8 +17,8 @@ export function Button({
 }: ButtonProps & ComponentProps<"button">) {
   return (
     <button
-      {...props}
       className={cn(buttonVariants({ variant, shape, className, animation }))}
+      {...props}
     >
       <div className="absolute inset-0 -mb-2">
         {!customPaths && (shape == "default" || shape == "flat") && (
@@ -33,4 +33,3 @@ export function Button({
     </button>
   );
 }
-

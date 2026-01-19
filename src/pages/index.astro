@@ -2,9 +2,9 @@
 import Layout from "@/components/layouts/layout.astro";
 import Button from "@/components/ui/button/button.astro";
 import Card from "@/components/ui/card/card.astro";
-import Dialog from "@/components/ui/dialog/dialog";
-import { DialogExample } from "@/components/ui/dialog/example";
-import { Trash, CheckCircle, LoaderCircle, Unplug, Save } from "@lucide/astro";
+import DialogExample from "@/components/ui/dialog/example";
+import DialogSvelteExample from "@/components/ui/dialog/example.svelte";
+import { Trash, LoaderCircle } from "@lucide/astro";
 ---
 
 <Layout>
@@ -14,6 +14,7 @@ import { Trash, CheckCircle, LoaderCircle, Unplug, Save } from "@lucide/astro";
         <Trash class="size-4 me-2.5" /> Remove
       </Button>
       <DialogExample client:only="preact" />
+      <DialogSvelteExample client:only="svelte" />
       <Button shape="simple">
         <LoaderCircle class="animate-spin size-4 me-2.5" />{" "}
         Logging in...

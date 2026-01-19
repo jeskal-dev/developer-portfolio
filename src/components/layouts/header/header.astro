@@ -1,0 +1,136 @@
+---
+import Button from "@/components/ui/button/button.astro";
+import Frame from "@/components/ui/frame/frame.svelte";
+import { cn } from "@/helpers/classname";
+import { Github, Zap } from "@lucide/astro";
+import {
+  headerBorderLeft,
+  headerBorderRight,
+  headerCard,
+  headerNav,
+} from "./header.styles";
+---
+
+<header
+  class="before:fixed before:inset-x-0 before:top-0 before:h-80 before:bg-linear-to-b before:from-black/50 before:to-transparent before:z-[-1]"
+>
+  <div
+    class="h-18 mt-2 mx-2 lg:-mt-px lg:-mx-px flex fixed top-0 inset-x-0 z-50"
+  >
+    <div
+      class={cn([
+        "size-full relative -mr-2.75 hidden lg:block",
+        "[--color-frame-1-stroke:var(--color-primary)]/90",
+        "[--color-frame-1-fill:var(--color-primary)]/8",
+        "[--color-frame-2-stroke:var(--color-primary)]/23",
+        "[--color-frame-2-fill:transparent]",
+      ])}
+    >
+      <Frame
+        client:visible
+        class="drop-shadow-2xl drop-shadow-primary"
+        paths={headerBorderLeft}
+      />
+    </div>
+    <div class="flex lg:container h-full relative flex-none w-full">
+      <nav
+        class={cn([
+          "flex-none h-full px-14 relative w-full lg:w-auto",
+          "[--color-frame-1-stroke:var(--color-primary)]",
+          "[--color-frame-1-fill:var(--color-primary)]/20",
+          "[--color-frame-2-stroke:var(--color-primary)]/57",
+          "[--color-frame-2-fill:transparent]",
+          "[--color-frame-3-stroke:var(--color-primary)]/23",
+          "[--color-frame-3-fill:transparent]",
+        ])}
+      >
+        <Frame
+          client:visible
+          enableBackdropBlur
+          class="drop-shadow-2xl drop-shadow-primary/40"
+          paths={headerNav}
+        />
+        <div class="flex items-center mt-4.5 relative">
+          <a
+            href="/"
+            class="me-16 font-bold text-shadow-lg text-shadow-primary"
+          >
+            COSMIC UI
+          </a>
+          <div
+            class="hidden lg:flex gap-8 font-medium [&>a]:hover:text-shadow-lg [&>a]:hover:text-shadow-primary/40"
+          >
+            <a
+              class="hover:text-shadow-lg hover:text-shadow-primary/50"
+              href="/docs"
+            >
+              Docs
+            </a>
+            <a
+              class="hover:text-shadow-lg hover:text-shadow-primary/50"
+              href="/docs/frame"
+            >
+              Components
+            </a>
+            <a
+              class="hover:text-shadow-lg hover:text-shadow-primary/50"
+              href="/docs/colors"
+            >
+              Colors
+            </a>
+          </div>
+          <div
+            class="cursor-pointer ms-auto flex items-center gap-2 lg:hidden font-medium"
+          >
+            <Zap class="size-4" />
+            Menu
+          </div>
+        </div>
+      </nav>
+      <div
+        class={cn([
+          "w-full relative -ml-6.25 lg:flex justify-end pe-8 hidden",
+          "[--color-frame-1-stroke:var(--color-primary)]",
+          "[--color-frame-1-fill:var(--color-primary)]/10",
+          "[--color-frame-2-stroke:var(--color-primary)]/23",
+          "[--color-frame-2-fill:transparent]",
+        ])}
+      >
+        <Frame
+          client:visible
+          enableBackdropBlur
+          class="drop-shadow-2xl drop-shadow-primary/40"
+          paths={headerCard}
+        />
+        <div class="flex items-center -mt-3.5">
+          <Button
+            shape="flat"
+            class="font-normal px-9 py-[0.45rem] text-xs text-foreground [--color-frame-1-stroke:var(--color-primary)]/50 [--color-frame-1-fill:var(--color-primary)]/8"
+          >
+            <div class="me-10">Search Docs…</div>
+            <div class="ms-auto">⌘+k</div>
+          </Button>
+          <a target="_blank" href="https://github.com/rizkimuhammada/cosmic-ui">
+            <Button
+              shape="flat"
+              class="py-[0.45rem] px-6 ms-1 text-foreground [--color-frame-1-stroke:var(--color-accent)]/50 [--color-frame-1-fill:var(--color-accent)]/20"
+            >
+              <Github class="size-4 stroke-[1.2]" />
+            </Button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class={cn([
+        "size-full relative -ml-4.5 hidden lg:block",
+        "[--color-frame-1-stroke:var(--color-primary)]/90",
+        "[--color-frame-1-fill:var(--color-primary)]/8",
+        "[--color-frame-2-stroke:var(--color-primary)]/23",
+        "[--color-frame-2-fill:transparent]",
+      ])}
+    >
+      <Frame client:visible paths={headerBorderRight} />
+    </div>
+  </div>
+</header>

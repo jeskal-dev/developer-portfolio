@@ -1,29 +1,33 @@
 @import "tailwindcss";
-/* @import "tailwind-animations"; */
+@import "tailwind-animations";
 @import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme {
   --background-image-temper: url("../assets/images/temper.svg");
   --background-image-noise: url("../assets/images/noise.png");
 
   --color-primary: rgb(20, 160, 230);
-  /* --color-primary: var(--color-sky-400); */
   --color-primary-foreground: rgb(255, 255, 255);
   --color-accent: rgb(202, 65, 34);
   --color-accent-foreground: rgb(255, 255, 255);
-  --color-secondary: --alpha(color-mix(in oklab, var(--color-primary), var(--color-white) 50%) / 60%);
-  --color-secondary-foreground: color-mix(in oklab,
-      var(--color-primary),
-      var(--color-white) 70%);
+  --color-secondary: --alpha(
+    color-mix(in oklab, var(--color-primary), var(--color-white) 50%) / 60%
+  );
+  --color-secondary-foreground: color-mix(
+    in oklab,
+    var(--color-primary),
+    var(--color-white) 70%
+  );
   --color-destructive: var(--color-rose-500);
   --color-destructive-foreground: rgb(255, 255, 255);
   --color-success: var(--color-teal-500);
   --color-success-foreground: rgb(255, 255, 255);
-  --color-background: color-mix(in oklab,
-      var(--color-primary),
-      var(--color-black) 80%);
+  --color-background: color-mix(
+    in oklab,
+    var(--color-primary),
+    var(--color-black) 80%
+  );
   --color-foreground: var(--color-white);
 
   --font-orbitron: "Orbitron", sans-serif;
@@ -92,16 +96,21 @@
 
 body {
   @apply bg-background overflow-x-hidden bg-fixed antialiased text-sm font-orbitron text-foreground tracking-wider;
-  background-image: repeating-linear-gradient(0deg,
+  background-image:
+    repeating-linear-gradient(
+      0deg,
       --alpha(var(--color-foreground) / 5%) 0,
       --alpha(var(--color-foreground) / 5%) 1px,
       transparent 1px,
-      transparent 35rem),
-    repeating-linear-gradient(90deg,
+      transparent 35rem
+    ),
+    repeating-linear-gradient(
+      90deg,
       --alpha(var(--color-foreground) / 5%) 0,
       --alpha(var(--color-foreground) / 5%) 1px,
       transparent 1px,
-      transparent 35rem);
+      transparent 35rem
+    );
 }
 
 .typing-container {
@@ -113,7 +122,9 @@ body {
 
 .typing-text {
   display: inline-block;
-  animation: typing 6s steps(25) 1s infinite, blink 0.7s step-end infinite;
+  animation:
+    typing 6s steps(25) 1s infinite,
+    blink 0.7s step-end infinite;
 }
 
 @keyframes typing {
@@ -147,5 +158,79 @@ body {
 
   100% {
     filter: blur(0px);
+  }
+}
+
+@keyframes centerExpand {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes centerCollapse {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes borderGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 24rem;
+    height: 24rem;
+    opacity: 0;
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

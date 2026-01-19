@@ -2,11 +2,11 @@ import { CheckCircle, Save, Unplug } from "lucide-preact";
 import { Button } from "../button/button";
 import Dialog from "./dialog";
 
-export const DialogExample = () => {
+const DialogExample = () => {
   return (
     <Dialog>
       <Dialog.Trigger asChild>
-        <Button variant="success" animation="scale-up">
+        <Button variant="success">
           <CheckCircle class="size-4 me-2.5" /> Accept
         </Button>
       </Dialog.Trigger>
@@ -17,7 +17,7 @@ export const DialogExample = () => {
         </Dialog.Description>
         <div class="py-5 flex flex-col gap-4"></div>
         <div class="flex flex-col sm:flex-row gap-y-3 justify-end mt-3 pb-2">
-          <Dialog.Close asChild>
+          <Dialog.Close>
             <Button variant="secondary" class="min-w-30">
               <Unplug class="size-4 me-2.5" />
               Cancel
@@ -28,9 +28,9 @@ export const DialogExample = () => {
             Save changes
           </Button>
         </div>
-        <Dialog.Close />
       </Dialog.Content>
     </Dialog>
   );
 };
 
+export default DialogExample;
