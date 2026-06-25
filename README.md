@@ -1,342 +1,197 @@
-# Developer Portfolio
+# 🚀 Portafolio de Desarrollador — Astro + Tailwind
 
-Esta es una guía integral y estructurada para desarrollar tu portafolio, sintetizando las mejores prácticas de los documentos proporcionados y añadiendo ideas estratégicas nuevas. El objetivo es tratar tu portafolio no como un simple currículum web, sino como un **producto de software completo**.
+Portafolio web personal orientado a captar clientes freelance y startups tecnológicas.
+Construido con Astro (SSG), TypeScript, Tailwind CSS y React (para islas interactivas).
 
----
-
-# 🚀 Guía Maestra: Desarrollo de Portafolio de Desarrollador con Astro
-
-## 1. Estrategia de Contenido y Narrativa
-
-Antes de escribir código, debes definir qué historia cuenta tu portafolio. No es solo una colección de enlaces; es tu carta de presentación profesional.
-
-### La Estructura "Narrativa"
-
-Un portafolio efectivo debe funcionar como una narrativa técnica.
-
-| Sección           | Objetivo Estratégico                     | Contenido Clave                                                                         |
-| ----------------- | ---------------------------------------- | --------------------------------------------------------------------------------------- |
-| **Hero (Inicio)** | Captar atención en < 3 segundos.         | Propuesta de valor única (no genérica), foto profesional, enlaces sociales y CTA claro. |
-| **Sobre Mí**      | Contexto humano y profesional.           | Filosofía de trabajo, trayectoria, soft skills y enfoque técnico (no solo hobbies).     |
-| **Proyectos**     | Demostración de resolución de problemas. | 3-6 mejores proyectos. Calidad > Cantidad.                                              |
-| **Skills**        | Honestidad técnica.                      | Categoriza en "Experto", "Competente" y "Aprendiendo" para mostrar madurez.             |
-| **Contacto**      | Fricción cero.                           | Formulario funcional, email (con opción de copiar), y redes.                            |
-
-### Estructura de un "Case Study" (Estudio de Caso)
-
-No te limites a poner una captura y un enlace. Trata cada proyecto con profundidad:
-
-1.  **El Problema:** ¿Qué desafío enfrentabas?.
-
-2.  **La Solución:** ¿Cómo lo resolviste técnica y arquitectónicamente?.
-
-3.  **El Stack:** ¿Por qué elegiste esas tecnologías?.
-
-4.  **El Resultado (Métricas):** Cuantifica el éxito (ej. "Reducción del 40% en TTFB", "Ahorro de 50$/mes").
-
-5.  **Enlaces:** Repo (código limpio) y Demo en vivo.
+Implementa fielmente el sistema de diseño **Cut Corners** descrito en `DESIGN.md`.
 
 ---
 
-## 2. Stack Tecnológico: Arquitectura de Alto Rendimiento
+## ⚙️ Stack
 
-La elección unánime es **Astro** por su arquitectura de islas, priorizando el envío de HTML estático y "hidratando" solo lo interactivo.
-
-### 🛠️ El "Golden Stack" Recomendado
-
-| Capa               | Tecnología                  | Justificación Técnica                                                        |
-| ------------------ | --------------------------- | ---------------------------------------------------------------------------- |
-| **Core**           | **Astro 5.x**               | Rendimiento excepcional, SEO nativo y Content Layer.                         |
-| **Lenguaje**       | **TypeScript**              | Modo estricto para evitar errores y documentar el código implícitamente.     |
-| **Estilos**        | **Tailwind CSS**            | Desarrollo rápido, sistema de diseño consistente y ligero.                   |
-| **Interactividad** | **React** o **Svelte**      | React para ecosistema/compatibilidad o Svelte para menor peso del bundle.    |
-| **Contenido**      | **MDX + Zod**               | Escritura flexible en Markdown con validación estricta de esquemas de datos. |
-| **Animación**      | **Framer Motion**           | Para micro-interacciones profesionales y transiciones complejas.             |
-| **Despliegue**     | **Vercel** o **Cloudflare** | CI/CD automático, Edge functions y analíticas.                               |
+- **Framework principal:** Astro 4.x (SSG)
+- **Lenguaje:** TypeScript
+- **Estilos:** Tailwind CSS + tokens CSS nativos (OKLCH)
+- **Islas interactivas:** React 18 (Theme Toggle, Skills Board)
+- **Contenido:** Content Collections + MDX
+- **SEO:** `@astrojs/sitemap` + Open Graph + Twitter Cards + canonical
+- **Transiciones:** View Transitions API nativa de Astro
 
 ---
 
-## 3. Arquitectura del Proyecto y Código
+## 📁 Estructura del Proyecto
 
-Organiza tu código para que sea escalable y fácil de leer para otros desarrolladores que visiten tu repo.
-
-### Estructura de Carpetas Sugerida
-
-```mermaid
-flowchart TD
-    root[src/] --> components[components/]
-    root --> content[content/]
-    root --> layouts[layouts/]
-    root --> pages[pages/]
-
-    components --> ui[ui/ <br>Atomos reutilizables]
-    components --> islands[islands/ <br>Componentes interactivos]
-
-    content --> blog[blog/ <br>MDX Files]
-    content --> projects[projects/ <br>MDX + Frontmatter]
-    content --> config[config.ts <br>Esquemas Zod]
-
+```text
+portfolio/
+├── astro.config.mjs          ← Configuración Astro + alias Vite + SITE_URL
+├── tailwind.config.mjs       ← Tokens OKLCH mapeados a Tailwind
+├── tsconfig.json             ← Alias @data, @components, @layouts, @styles
+│
+├── public/
+│   └── favicon.svg           ← Favicon SVG con cut-corner
+│
+└── src/
+    ├── components/
+    │   ├── layout/           ← Header, Footer, SEO
+    │   ├── home/             ← Hero, Services, FeaturedProjects, SkillsBoard
+    │   ├── projects/         ← (futuro)
+    │   ├── contact/          ← ContactSection
+    │   └── ui/               ← Card, Button, Badge, Icon, ThemeToggle
+    │
+    ├── content/
+    │   ├── config.ts         ← Schema de proyectos (Zod)
+    │   └── proyectos/        ← Casos de estudio en MDX (4 placeholders)
+    │
+    ├── data/                 ← 🔴 TODOS LOS VALORES EDITABLES AQUÍ
+    │   ├── site.ts           ← Nombre, email, hero, CV, URL producción
+    │   ├── nav.ts            ← Items de navegación
+    │   ├── social.ts         ← GitHub, LinkedIn, X
+    │   ├── services.ts       ← Tipos de solución (Web, Desktop, Backend)
+    │   ├── skills.ts         ← Habilidades por ecosistema
+    │   └── demos.ts          ← Enlaces a demos Tauri descargables
+    │
+    ├── layouts/
+    │   └── BaseLayout.astro  ← HTML raíz + SEO + View Transitions + anti-flash
+    │
+    ├── pages/
+    │   ├── index.astro       ← Home
+    │   ├── 404.astro
+    │   └── proyectos/
+    │       ├── index.astro   ← Listado por tipo de solución
+    │       └── [slug].astro  ← Caso de estudio dinámico
+    │
+    └── styles/
+        └── global.css        ← Tokens OKLCH + clases geom-cut-* + utilidades
 ```
 
-### Validaciones Clave (Best Practices)
+---
 
-- **Tipado Estricto (Zod):** Define esquemas que obliguen a que cada proyecto tenga imagen, fecha y título. Si falta algo, el build debe fallar.
+## 🔴 Dónde cambiar los valores hardcodeados
 
-- **Testing:** Implementa Vitest para unit testing y Playwright para pruebas E2E (ej. verificar que el formulario funciona).
+**TODOS los datos editables viven en `/src/data/`. No necesitas tocar componentes para reemplazar valores:**
 
-- **Imágenes:** Usa `<Image />` de Astro y `sharp` para generar WebP/AVIF y evitar Layout Shifts.
+| Archivo                       | Qué controlar                                            |
+| ----------------------------- | -------------------------------------------------------- |
+| `src/data/site.ts`            | Tu nombre, email, CV, URL de producción, textos del hero |
+| `src/data/social.ts`          | Tus URLs de GitHub, LinkedIn, X                          |
+| `src/data/nav.ts`             | Items del menú de navegación                             |
+| `src/data/services.ts`        | Tipos de solución que ofreces                            |
+| `src/data/skills.ts`          | Tu stack técnico por ecosistema                          |
+| `src/data/demos.ts`           | Enlaces a demos Tauri (o cualquier otra demo)            |
+| `astro.config.mjs`            | `SITE_URL` (línea 10) — tu dominio de producción         |
+| `src/content/proyectos/*.mdx` | Casos de estudio (uno por archivo)                       |
 
 ---
 
-## 4. Características "Wow" para Diferenciarte
-
-Para destacar en un mercado saturado, implementa funcionalidades que demuestren nivel "Senior" o ingeniería avanzada.
-
-### 🌟 Funcionalidades Avanzadas
-
-1. **Command Palette (`Cmd+K`):**
-
-- Implementa una barra de búsqueda global para navegar por proyectos, cambiar temas o copiar tu email sin usar el mouse. Demuestra enfoque en "Power Users".
-
-2. **Open Graph (OG) Dinámico:**
-
-- Genera automáticamente las imágenes para compartir en redes sociales usando `@vercel/og` o Satori basado en el título del post/proyecto.
-
-3. **Server Islands (Islas de Servidor):**
-
-- Usa el renderizado parcial de Astro para mostrar contenido dinámico (ej. tu disponibilidad actual, hora local, o canción de Spotify) sin romper el caché estático del resto de la página.
-
-4. **Dashboard de Métricas en Vivo:**
-
-- Conecta la API de GitHub para mostrar tus commits del último año o estrellas en repositorios en tiempo real.
-
-5. **Modo Oscuro Persistente y sin "Flicker":**
-
-- Usa `localStorage` y scripts en línea para evitar el parpadeo blanco al cargar la página.
-
-### 💡 Ideas Creativas Adicionales (Nuevas)
-
-- **"Easter Eggs" en Consola:** Deja un mensaje personalizado (`console.log`) para los reclutadores que inspeccionen tu sitio.
-
-- **Página 404 Interactiva:** No uses un error genérico. Crea un mini-juego o una animación que redirija al home.
-
-- **Timeline Interactivo:** Visualiza tu trayectoria con una animación controlada por el scroll (Scroll-driven animations).
-
----
-
-## 5. Hoja de Ruta de Implementación
-
-Sigue este plan paso a paso para no abrumarte:
-
-1. **Fase 1: Setup y Estructura (Semana 1)**
-
-- `npm create astro@latest`.
-
-- Instalar Tailwind y configurar tipografías.
-- Definir Colecciones de Contenido (Zod Schemas).
-
-2. **Fase 2: Core Content (Semana 2)**
-
-- Desarrollar Layouts y componentes UI base (Botones, Cards).
-- Crear páginas estáticas: Hero, Sobre Mí.
-- Redactar los Case Studies de los proyectos (Texto + Imágenes).
-
-3. **Fase 3: Interactividad (Semana 3)**
-
-- Implementar "Islas": Filtro de proyectos, Theme Toggle, Menú móvil.
-
-- Añadir animaciones con Framer Motion.
-
-4. **Fase 4: Pulido y Extras (Semana 4)**
-
-- SEO (Sitemap, Robots.txt, Meta tags).
-
-- Accesibilidad (Navegación por teclado, ARIA labels).
-
-- Optimización (Lighthouse Score 100/100).
-
----
-
-## 6. Checklist de Lanzamiento 🚀
-
-Antes de hacer público tu portafolio, verifica estos puntos críticos:
-
-- [ ] **Performance:** Puntuación Lighthouse > 95 en móvil y desktop.
-
-- [ ] **SEO:** `robots.txt` y `sitemap.xml` generados automáticamente.
-
-- [ ] **Seguridad:** Enlaces externos con `rel="noopener noreferrer"`.
-
-- [ ] **Accesibilidad:** Contraste de colores WCAG AA y navegación por teclado funcional.
-
-- [ ] **Error 404:** Página personalizada funcional.
-
-- [ ] **Repo:** README.md profesional explicando cómo correr el proyecto localmente.
-      Esta es una guía integral y estructurada para desarrollar tu portafolio, sintetizando las mejores prácticas de los documentos proporcionados y añadiendo ideas estratégicas nuevas. El objetivo es tratar tu portafolio no como un simple currículum web, sino como un **producto de software completo**.
-
----
-
-# 🚀 Guía Maestra: Desarrollo de Portafolio de Desarrollador con Astro
-
-## 1. Estrategia de Contenido y Narrativa
-
-Antes de escribir código, debes definir qué historia cuenta tu portafolio. No es solo una colección de enlaces; es tu carta de presentación profesional.
-
-### La Estructura "Narrativa"
-
-Un portafolio efectivo debe funcionar como una narrativa técnica.
-
-| Sección           | Objetivo Estratégico                     | Contenido Clave                                                                         |
-| ----------------- | ---------------------------------------- | --------------------------------------------------------------------------------------- |
-| **Hero (Inicio)** | Captar atención en < 3 segundos.         | Propuesta de valor única (no genérica), foto profesional, enlaces sociales y CTA claro. |
-| **Sobre Mí**      | Contexto humano y profesional.           | Filosofía de trabajo, trayectoria, soft skills y enfoque técnico (no solo hobbies).     |
-| **Proyectos**     | Demostración de resolución de problemas. | 3-6 mejores proyectos. Calidad > Cantidad.                                              |
-| **Skills**        | Honestidad técnica.                      | Categoriza en "Experto", "Competente" y "Aprendiendo" para mostrar madurez.             |
-| **Contacto**      | Fricción cero.                           | Formulario funcional, email (con opción de copiar), y redes.                            |
-
-### Estructura de un "Case Study" (Estudio de Caso)
-
-No te limites a poner una captura y un enlace. Trata cada proyecto con profundidad:
-
-1.  **El Problema:** ¿Qué desafío enfrentabas?.
-
-2.  **La Solución:** ¿Cómo lo resolviste técnica y arquitectónicamente?.
-
-3.  **El Stack:** ¿Por qué elegiste esas tecnologías?.
-
-4.  **El Resultado (Métricas):** Cuantifica el éxito (ej. "Reducción del 40% en TTFB", "Ahorro de 50$/mes").
-
-5.  **Enlaces:** Repo (código limpio) y Demo en vivo.
-
----
-
-## 2. Stack Tecnológico: Arquitectura de Alto Rendimiento
-
-La elección unánime es **Astro** por su arquitectura de islas, priorizando el envío de HTML estático y "hidratando" solo lo interactivo.
-
-### 🛠️ El "Golden Stack" Recomendado
-
-| Capa               | Tecnología                  | Justificación Técnica                                                        |
-| ------------------ | --------------------------- | ---------------------------------------------------------------------------- |
-| **Core**           | **Astro 5.x**               | Rendimiento excepcional, SEO nativo y Content Layer.                         |
-| **Lenguaje**       | **TypeScript**              | Modo estricto para evitar errores y documentar el código implícitamente.     |
-| **Estilos**        | **Tailwind CSS**            | Desarrollo rápido, sistema de diseño consistente y ligero.                   |
-| **Interactividad** | **React** o **Svelte**      | React para ecosistema/compatibilidad o Svelte para menor peso del bundle.    |
-| **Contenido**      | **MDX + Zod**               | Escritura flexible en Markdown con validación estricta de esquemas de datos. |
-| **Animación**      | **Framer Motion**           | Para micro-interacciones profesionales y transiciones complejas.             |
-| **Despliegue**     | **Vercel** o **Cloudflare** | CI/CD automático, Edge functions y analíticas.                               |
-
----
-
-## 3. Arquitectura del Proyecto y Código
-
-Organiza tu código para que sea escalable y fácil de leer para otros desarrolladores que visiten tu repo.
-
-### Estructura de Carpetas Sugerida
-
-```mermaid
-flowchart TD
-    root[src/] --> components[components/]
-    root --> content[content/]
-    root --> layouts[layouts/]
-    root --> pages[pages/]
-
-    components --> ui[ui/ <br>Atomos reutilizables]
-    components --> islands[islands/ <br>Componentes interactivos]
-
-    content --> blog[blog/ <br>MDX Files]
-    content --> projects[projects/ <br>MDX + Frontmatter]
-    content --> config[config.ts <br>Esquemas Zod]
-
+## 🎨 Sistema de Diseño — Cut Corners
+
+Implementado estrictamente según `DESIGN.md`:
+
+- **Colores:** exclusivamente OKLCH (cero hexadecimales, cero RGB).
+- **Geometría:** clases `.geom-cut-sm/md/lg` con `clip-path` diagonal opuesto (Top-Right + Bottom-Left).
+- **Botones CTA:** corte direccional simple (Bottom-Right) para sugerir avance.
+- **Inputs:** `border-radius: var(--radius-soft)` — **sin** `clip-path` (Regla 2).
+- **Sombras:** patrón Wrapper + Inner (`filter: drop-shadow` en wrapper porque `clip-path` destruye `box-shadow`).
+- **Dark mode por defecto.** Toggle persiste en `localStorage('theme')`. Script anti-flash inline en `<head>`.
+
+### Tokens disponibles
+
+```css
+--background, --card, --card-hover
+--text-primary, --text-secondary, --text-disabled
+--border-default, --border-focus
+--accent-primary (azul), --accent-success (verde), --accent-warning (ámbar), --accent-danger (coral)
+--radius-soft (12px), --cut-size-sm (8px), --cut-size-md (16px), --cut-size-lg (24px)
 ```
 
-### Validaciones Clave (Best Practices)
+---
 
-- **Tipado Estricto (Zod):** Define esquemas que obliguen a que cada proyecto tenga imagen, fecha y título. Si falta algo, el build debe fallar.
+## 🧩 Comandos
 
-- **Testing:** Implementa Vitest para unit testing y Playwright para pruebas E2E (ej. verificar que el formulario funciona).
-
-- **Imágenes:** Usa `<Image />` de Astro y `sharp` para generar WebP/AVIF y evitar Layout Shifts.
+```bash
+npm install      # instalar dependencias
+npm run dev      # arrancar dev server en http://localhost:4321
+npm run build    # build estático a /dist
+npm run preview  # previsualizar build de producción
+```
 
 ---
 
-## 4. Características "Wow" para Diferenciarte
+## 📝 Cómo añadir un nuevo proyecto
 
-Para destacar en un mercado saturado, implementa funcionalidades que demuestren nivel "Senior" o ingeniería avanzada.
+Crea un archivo `.mdx` en `src/content/proyectos/`. El nombre del archivo será el slug de la URL
+(`/proyectos/<filename>/`).
 
-### 🌟 Funcionalidades Avanzadas
+```mdx
+---
+title: "Mi nuevo proyecto"
+tipoSolucion: "Aplicacion Web" # debe coincidir con un services[].id
+stack: ["React", "NestJS"]
+destacado: false # true para mostrarlo en el home
+fecha: 2025-01-15
+cliente: "Nombre del cliente"
+duracion: "2 meses"
+problema: "Contexto del cliente y dolor a resolver."
+solucion: "Qué construiste y cómo."
+resultados: "Métricas concretas (+40%, -90%, etc.)."
+seoDescription: "Descripción corta para SEO."
+---
 
-1. **Command Palette (`Cmd+K`):**
+## Contexto del Cliente
 
-- Implementa una barra de búsqueda global para navegar por proyectos, cambiar temas o copiar tu email sin usar el mouse. Demuestra enfoque en "Power Users".
+Contenido MDX libre aquí. Puedes usar bloques de código, listas, blockquotes, etc.
 
-2. **Open Graph (OG) Dinámico:**
-
-- Genera automáticamente las imágenes para compartir en redes sociales usando `@vercel/og` o Satori basado en el título del post/proyecto.
-
-3. **Server Islands (Islas de Servidor):**
-
-- Usa el renderizado parcial de Astro para mostrar contenido dinámico (ej. tu disponibilidad actual, hora local, o canción de Spotify) sin romper el caché estático del resto de la página.
-
-4. **Dashboard de Métricas en Vivo:**
-
-- Conecta la API de GitHub para mostrar tus commits del último año o estrellas en repositorios en tiempo real.
-
-5. **Modo Oscuro Persistente y sin "Flicker":**
-
-- Usa `localStorage` y scripts en línea para evitar el parpadeo blanco al cargar la página.
-
-### 💡 Ideas Creativas Adicionales (Nuevas)
-
-- **"Easter Eggs" en Consola:** Deja un mensaje personalizado (`console.log`) para los reclutadores que inspeccionen tu sitio.
-
-- **Página 404 Interactiva:** No uses un error genérico. Crea un mini-juego o una animación que redirija al home.
-
-- **Timeline Interactivo:** Visualiza tu trayectoria con una animación controlada por el scroll (Scroll-driven animations).
+> ⚠️ Evita usar `<` literal en el cuerpo del MDX (MDX lo parsea como JSX).
+> Usa `&lt;` en su lugar, o reformula la frase.
+```
 
 ---
 
-## 5. Hoja de Ruta de Implementación
+## 🌗 Tema (Dark/Light)
 
-Sigue este plan paso a paso para no abrumarte:
-
-1. **Fase 1: Setup y Estructura (Semana 1)**
-
-- `npm create astro@latest`.
-- Instalar Tailwind y configurar tipografías.
-- Definir Colecciones de Contenido (Zod Schemas).
-
-2. **Fase 2: Core Content (Semana 2)**
-
-- Desarrollar Layouts y componentes UI base (Botones, Cards).
-- Crear páginas estáticas: Hero, Sobre Mí.
-- Redactar los Case Studies de los proyectos (Texto + Imágenes).
-
-3. **Fase 3: Interactividad (Semana 3)**
-
-- Implementar "Islas": Filtro de proyectos, Theme Toggle, Menú móvil.
-- Añadir animaciones con Framer Motion.
-
-4. **Fase 4: Pulido y Extras (Semana 4)**
-
-- SEO (Sitemap, Robots.txt, Meta tags).
-- Accesibilidad (Navegación por teclado, ARIA labels)
-- Optimización (Lighthouse Score 100/100).
+- Dark mode por defecto (especificación SPEC §4).
+- Persistencia en `localStorage('theme')`.
+- Script anti-flash en `<head>` para evitar FOUC.
+- Light mode override con `[data-theme='light']` en `global.css`.
 
 ---
 
-## 6. Checklist de Lanzamiento 🚀
+## 📊 SEO
 
-Antes de hacer público tu portafolio, verifica estos puntos críticos:
+- `sitemap-index.xml` generado automáticamente en build.
+- Open Graph + Twitter Cards en todas las páginas.
+- `canonical` por página.
+- HTML semántico (`<header>`, `<main>`, `<footer>`, `<article>`, `<nav>`, `<section>`, `<time>`).
+- Override de SEO por proyecto vía frontmatter (`seoDescription`).
 
-- [ ] **Performance:** Puntuación Lighthouse > 95 en móvil y desktop.
+**Antes de desplegar:**
 
-- [ ] **SEO:** `robots.txt` y `sitemap.xml` generados automáticamente.
+1. Cambia `SITE_URL` en `astro.config.mjs`.
+2. Crea `/public/og-default.png` (1200×630 recomendado).
+3. Sube tu CV a `/public/cv.pdf` y actualiza `cvUrl` en `src/data/site.ts`.
 
-- [ ] **Seguridad:** Enlaces externos con `rel="noopener noreferrer"`.
+---
 
-- [ ] **Accesibilidad:** Contraste de colores WCAG AA y navegación por teclado funcional.
+## 📈 Analíticas (preparado, no implementado)
 
-- [ ] **Error 404:** Página personalizada funcional.
+El `BaseLayout.astro` incluye un placeholder que lee `PUBLIC_ANALYTICS_PROVIDER` de variables de entorno.
+Para activar analytics (Vercel Analytics, Plausible, etc.), crea un `.env`:
 
-- [ ] **Repo:** README.md profesional explicando cómo correr el proyecto localmente.
+```bash
+PUBLIC_ANALYTICS_PROVIDER=plausible  # o vercel
+```
+
+E implementa la inyección del script según el proveedor elegido.
+
+---
+
+## 🚢 Despliegue
+
+El sitio es 100% estático. Compatible con:
+
+- Vercel
+- Netlify
+- Cloudflare Pages
+- GitHub Pages
+
+Solo apunta el build a `npm run build` y el output a `/dist`.

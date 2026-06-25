@@ -1,38 +1,17 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*"
-  ],
-  "exclude": [
-    "dist"
-  ],
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": [
-        "src/styles/*"
-      ],
-      "@/svelte/*": [
-        "src/components/islands/svelte/*"
-      ],
-      "@/layouts/*": [
-        "src/components/layouts/*"
-      ],
-      "@/stores/*": [
-        "src/stores/*"
-      ],
-      "@/helpers/*": [
-        "src/helpers/*"
-      ],
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@lucide/preact": [
-        "node_modules/lucide-preact"
-      ]
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@data/*": ["src/data/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@i18n/*": ["src/i18n/*"],
     },
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  }
+  },
 }

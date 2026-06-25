@@ -1,0 +1,54 @@
+---
+locale: "en"
+title: "Backend Empresarial para Fintech"
+code: "backend-fintech-spring"
+solutionType: "enterprise-backend"
+stack: ["Java", "Spring Boot", "Hibernate", "PostgreSQL", "Kafka"]
+featured: true
+date: 2024-03-05
+client: "Confidencial (Fintech B2B)"
+duration: "9 meses"
+problem: "Una fintech necesitaba un backend que procesara movimientos contables en tiempo real con consistencia transaccional estricta, integración con bancos vía protocolos legacy y cumplimiento regulatorio (GDPR, PSD2). El sistema legacy en PHP no escalaba y producía errores de conciliación."
+solution: "Se diseñó un backend Spring Boot modular con arquitectura hexagonal. La capa de dominio contiene las reglas contables puras, los adaptadores de infraestructura manejan PostgreSQL (con Hibernate y migraciones Flyway), Kafka para eventos y conectores SOAP/REST a bancos. La seguridad se gestionó con Spring Security + OAuth2 resource server."
+results: "Procesamiento de 50.000 transacciones/día sin errores de conciliación. Latencia p99 de 80ms en endpoints críticos. Pasó auditoría PSD2 en primera revisión. Reducción del 70% en costes de infraestructura vs el sistema PHP anterior."
+seoDescription: "Caso de estudio: backend fintempresarial con Spring Boot + Kafka. 50k transacciones/día con consistencia transaccional estricta."
+---
+
+## Contexto Regulatorio
+
+Una fintech B2B que procesa pagos entre empresas debe cumplir con PSD2 (autenticación fuerte del cliente),
+GDPR (derecho al olvido) y mantener trazabilidad auditada de cada movimiento contable. Esto descarta
+arquitecturas eventualmente consistentes para el core transaccional.
+
+## Arquitectura Hexagonal
+
+```mermaid
+    flowchart TD
+        A[Application Services] --> B[Web Adapter<br/>REST API]
+        A --> C[Kafka Adapter]
+        A --> D[Scheduled Jobs]
+        B --> E[Domain Layer<br/>Account, Transaction, Ledger rules]
+        C --> E
+        D --> E
+```
+
+El dominio no conoce Spring, Hibernate ni Kafka. Esto permite testear las reglas contables en milisegundos
+y cambiar adaptadores sin tocar la lógica de negocio.
+
+## Decisiones Técnicas Clave
+
+- **Transactions explícitas:** `@Transactional` solo en la capa de aplicación; el dominio nunca abre
+  transacciones.
+- **Kafka para auditoría:** cada comando que muta estado produce un evento a Kafka, que un consumer
+  independiente persiste en una base de datos de auditoría inmutable.
+- **Flyway para migraciones:** versionado estricto del schema, sin rollback automático (las migraciones
+  son siempre forward-only).
+- **OAuth2 resource server:** la API valida JWTs emitidos por el IdP corporativo, con claims `scope`
+  mapeados a authorities de Spring Security.
+
+## Resultados y Aprendizajes
+
+El sistema procesa 50.000 transacciones/día con **cero errores de conciliación** en 12 meses. La latencia
+p99 de los endpoints críticos es 80ms. Pasó la auditoría PSD2 en la primera revisión, gracias a la
+trazabilidad completa en Kafka. La reducción de costes de infraestructura fue del 70% respecto al sistema
+PHP anterior, principalmente porque la JVM maneja mucho mejor la concurrencia que PHP-FPM.

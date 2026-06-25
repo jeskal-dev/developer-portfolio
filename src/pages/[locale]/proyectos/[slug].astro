@@ -1,0 +1,374 @@
+---
+import BaseLayout from "@components/layouts/BaseLayout.astro";
+import Badge from "@components/ui/Badge.astro";
+import Button from "@components/ui/Button.astro";
+import Icon from "@components/ui/Icon.astro";
+import { getCollection, type CollectionEntry, render } from "astro:content";
+import { services } from "@data/services";
+import { siteConfig } from "@data/site";
+import { t, tInterpolate, formatDateFull, type Locale } from "@i18n/index";
+
+export async function getStaticPaths() {
+    const projects = await getCollection("projects");
+    const locales = ["en", "es"];
+    const paths = [];
+    for (const locale of locales) {
+        for (const p of projects) {
+            if (p.data.locale === locale) {
+                paths.push({
+                    params: { locale, slug: p.data.code },
+                    props: { project: p, locale },
+                });
+            }
+        }
+    }
+    return paths;
+}
+
+interface Props {
+    project: CollectionEntry<"projects">;
+    locale: Locale;
+}
+const { project } = Astro.props;
+const locale = (Astro.currentLocale as Locale) ?? "en";
+const { Content } = await render(project);
+
+function getServiceTitle(tipo: string) {
+    const svc = services.find((s) => s.id === tipo);
+    if (!svc) return tipo;
+    const idx = services.indexOf(svc);
+    return t(`services.title${idx + 1}`, locale);
+}
+
+const seoDescription = project.data.seoDescription ?? project.data.problem;
+
+const allProjects = await getCollection("projects");
+const related = allProjects
+    .filter(
+        (p) =>
+            p.data.solutionType === project.data.solutionType &&
+            p.data.code !== project.data.code &&
+            p.data.locale === locale,
+    )
+    .slice(0, 2);
+---
+
+<BaseLayout
+    title={`${project.data.title} — ${t("projects.caseStudy", locale)}`}
+    description={seoDescription}
+    type="article"
+    image={project.data.coverImage}
+    publishedTime={project.data.date}
+    locale={locale}
+>
+    <article class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-20">
+        <nav class="mb-8" aria-label="Breadcrumb">
+            <a
+                href={`/${locale}/proyectos`}
+                class="link-arrow text-xs text-text-secondary"
+            >
+                <Icon name="arrow" size={14} class="rotate-180" />
+                {t("projects.backToProjects", locale)}
+            </a>
+        </nav>
+
+        <header class="mb-10 coord-frame-4 relative p-2">
+            <span class="coord-mark tl"></span>
+            <span class="coord-mark tr"></span>
+            <span class="coord-mark bl"></span>
+            <span class="coord-mark br"></span>
+
+            <div class="px-4 py-2">
+                <p class="eyebrow eyebrow-accent reveal mb-5">
+                    <Icon name="package" size={11} />
+                    {t("projects.caseStudy", locale)} · {
+                        getServiceTitle(project.data.solutionType)
+                    }
+                </p>
+
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <Badge variant="primary">
+                        {getServiceTitle(project.data.solutionType)}
+                    </Badge>
+                    {
+                        project.data.featured && (
+                            <Badge variant="warning">
+                                {t("projects.featuredBadge", locale)}
+                            </Badge>
+                        )
+                    }
+                    <span class="font-mono text-xs text-text-disabled">
+                        {formatDateFull(project.data.date, locale)}
+                    </span>
+                </div>
+
+                <h1
+                    class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-[1.05] text-text-primary"
+                    data-delay="1"
+                >
+                    {project.data.title}
+                </h1>
+
+                {
+                    (project.data.client || project.data.duration) && (
+                        <div class="flex flex-wrap gap-x-6 gap-y-3 mt-6 text-sm">
+                            {project.data.client && (
+                                <div>
+                                    <p class="font-mono text-xs uppercase tracking-wider mb-1 text-text-disabled">
+                                        {t("projects.client", locale)}
+                                    </p>
+                                    <p class="text-text-primary">
+                                        {project.data.client}
+                                    </p>
+                                </div>
+                            )}
+                            {project.data.duration && (
+                                <div>
+                                    <p class="font-mono text-xs uppercase tracking-wider mb-1 text-text-disabled">
+                                        {t("projects.duration", locale)}
+                                    </p>
+                                    <p class="text-text-primary">
+                                        {project.data.duration}
+                                    </p>
+                                </div>
+                            )}
+                            <div>
+                                <p class="font-mono text-xs uppercase tracking-wider mb-1 text-text-disabled">
+                                    {t("projects.stack", locale)}
+                                </p>
+                                <p class="text-text-primary">
+                                    {project.data.stack.length}{" "}
+                                    {project.data.stack.length === 1
+                                        ? t("projects.tech", locale)
+                                        : t("projects.techs", locale)}
+                                </p>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        </header>
+
+        {
+            project.data.coverImage && (
+                <figure class="mb-10 reveal rounded-soft overflow-hidden border border-border-default">
+                    <img
+                        src={project.data.coverImage}
+                        alt={`${project.data.title} cover`}
+                        class="w-full aspect-[1200/630] object-cover"
+                        loading="lazy"
+                    />
+                </figure>
+            )
+        }
+
+        <section class="mb-10 reveal">
+            <p
+                class="font-mono text-xs uppercase tracking-widest mb-3 text-text-disabled"
+            >
+                {t("projects.techStack", locale)}
+            </p>
+            <div class="flex flex-wrap gap-2">
+                {
+                    project.data.stack.map((tech) => (
+                        <span class="badge geom-cut-sm badge-primary text-sm font-mono">
+                            {tech}
+                        </span>
+                    ))
+                }
+            </div>
+        </section>
+
+        <div class="grid gap-4 md:grid-cols-3 mb-12">
+            <div class="card-wrapper reveal" data-delay="1">
+                <div class="card-inner geom-cut-sm h-full p-4">
+                    <p
+                        class="font-mono text-xs uppercase tracking-wider mb-2 text-accent-warning"
+                    >
+                        {t("projects.problem", locale)}
+                    </p>
+                    <p class="text-sm leading-relaxed text-text-secondary">
+                        {project.data.problem}
+                    </p>
+                </div>
+            </div>
+            <div class="card-wrapper reveal" data-delay="2">
+                <div class="card-inner geom-cut-sm h-full p-4">
+                    <p
+                        class="font-mono text-xs uppercase tracking-wider mb-2 text-accent-primary"
+                    >
+                        {t("projects.solution", locale)}
+                    </p>
+                    <p class="text-sm leading-relaxed text-text-secondary">
+                        {project.data.solution}
+                    </p>
+                </div>
+            </div>
+            <div class="card-wrapper reveal" data-delay="3">
+                <div class="card-inner geom-cut-sm h-full p-4">
+                    <p
+                        class="font-mono text-xs uppercase tracking-wider mb-2 text-accent-success"
+                    >
+                        {t("projects.results", locale)}
+                    </p>
+                    <p class="text-sm leading-relaxed text-text-secondary">
+                        {project.data.results}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="prose-content reveal text-text-primary"
+            style="line-height: 1.75;"
+        >
+            <Content />
+        </div>
+
+        <div class="mt-16 card-wrapper reveal">
+            <div
+                class="card-inner geom-cut-lg text-center relative overflow-hidden p-cut-lg"
+            >
+                <div
+                    class="absolute -right-20 -top-20 pointer-events-none w-[300px] h-[300px]"
+                    style="background:radial-gradient(circle, oklch(0.7 0.15 220 / 0.18) 0%, transparent 70%);"
+                >
+                </div>
+                <div class="relative">
+                    <p class="eyebrow eyebrow-accent mb-4 inline-flex">
+                        <span class="status-dot"></span>
+                        {t("projects.availableFor", locale)}
+                    </p>
+                    <h2
+                        class="text-2xl md:text-3xl font-bold mb-3 text-text-primary font-display"
+                    >
+                        {t("projects.buildSimilar", locale)}
+                    </h2>
+                    <p class="text-text-secondary mb-6 max-w-lg mx-auto">
+                        {t("projects.ctaText", locale)}
+                    </p>
+                    <Button href={`mailto:${siteConfig.email}`} variant="cta">
+                        <Icon name="mail" size={18} />
+                        {t("projects.startConversation", locale)}
+                        <Icon name="arrow" size={16} />
+                    </Button>
+                </div>
+            </div>
+        </div>
+
+        {
+            related.length > 0 && (
+                <section class="mt-16 pt-10 border-t border-border-default">
+                    <p class="font-mono text-xs uppercase tracking-widest mb-5 text-text-disabled">
+                        {t("projects.relatedCases", locale)}
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        {related.map((p) => (
+                            <a
+                                href={`/${locale}/proyectos/${p.data.code}`}
+                                class="card-wrapper reveal"
+                            >
+                                <div class="card-inner geom-cut-sm p-4">
+                                    <p class="font-mono text-[0.65rem] uppercase tracking-widest mb-1 text-text-disabled">
+                                        {tInterpolate(
+                                            "projects.caseRef",
+                                            locale,
+                                            { code: p.data.code },
+                                        )}
+                                    </p>
+                                    <p class="text-sm font-bold mb-1 text-text-primary">
+                                        {p.data.title}
+                                    </p>
+                                    <p class="text-xs line-clamp-1 text-text-secondary">
+                                        {p.data.problem}
+                                    </p>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+    </article>
+</BaseLayout>
+
+<style is:global>
+    .prose-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+    }
+    .prose-content h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+    }
+    .prose-content p {
+        margin-bottom: 1rem;
+        color: var(--text-secondary);
+    }
+    .prose-content ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 1rem;
+    }
+    .prose-content ul li {
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        position: relative;
+    }
+    .prose-content ul li::before {
+        content: "▸";
+        color: var(--accent-primary);
+        position: absolute;
+        left: 0;
+        font-family: "JetBrains Mono", monospace;
+    }
+    .prose-content pre {
+        background-color: color-mix(in oklch, var(--background) 100%, var(--accent-primary) 3%);
+        border: 1px solid color-mix(in oklch, var(--border-default) 80%, var(--accent-primary) 20%);
+        border-radius: var(--radius-soft);
+        padding: 1.25rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+        font-size: 0.8125rem;
+        line-height: 1.45;
+        white-space: pre;
+        tab-size: 2;
+    }
+    .prose-content code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.875em;
+    }
+    .prose-content :not(pre) > code {
+        background-color: var(--background);
+        color: var(--accent-primary);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid var(--border-default);
+    }
+    .prose-content blockquote {
+        border-left: 3px solid var(--accent-primary);
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+    .prose-content strong {
+        color: var(--text-primary);
+        font-weight: 700;
+    }
+
+    .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

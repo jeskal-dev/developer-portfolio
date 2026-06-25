@@ -1,0 +1,187 @@
+---
+import BaseLayout from "@components/layouts/BaseLayout.astro";
+import Card from "@components/ui/Card.astro";
+import Badge from "@components/ui/Badge.astro";
+import Icon from "@components/ui/Icon.astro";
+import { getCollection } from "astro:content";
+import { services } from "@data/services";
+import { t, tInterpolate, formatDate, type Locale } from "@i18n/index";
+
+export async function getStaticPaths() {
+    return [{ params: { locale: "en" } }, { params: { locale: "es" } }];
+}
+
+const locale = (Astro.currentLocale ?? "en") as Locale;
+
+const allProjects = (await getCollection("projects"))
+    .filter((p) => p.data.locale === locale)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const totalProjects = allProjects.length;
+const featuredCount = allProjects.filter((p) => p.data.featured).length;
+---
+
+<BaseLayout
+    title={`${t("projects.heading", locale)} — ${t("projects.caseStudy", locale)}`}
+    description={t("projects.description", locale)}
+    locale={locale}
+>
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-10">
+        <p class="eyebrow reveal mb-5">{t("projects.eyebrow", locale)}</p>
+        <h1
+            class="reveal text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.02] text-text-primary"
+            data-delay="1"
+        >
+            {t("projects.heading", locale)}
+        </h1>
+        <p
+            class="reveal mt-5 text-base md:text-lg max-w-2xl text-text-secondary leading-relaxed"
+            data-delay="2"
+        >
+            {t("projects.description", locale)}
+        </p>
+
+        <div
+            class="reveal mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-text-disabled"
+            data-delay="3"
+        >
+            <span class="inline-flex items-center gap-2">
+                <Icon name="package" size={12} />
+                {totalProjects}
+                {" "}
+                {t("projects.caseStudy", locale)}
+            </span>
+            <span class="text-border-default">·</span>
+            <span class="inline-flex items-center gap-2">
+                <Icon name="layers" size={12} />
+                {services.length}
+                {" "}
+                {t("projects.solutionType", locale)}
+            </span>
+            <span class="text-border-default">·</span>
+            <span class="inline-flex items-center gap-2 text-accent-warning">
+                <Icon name="spark" size={12} />
+                {featuredCount}
+                {" "}
+                {t("projects.featuredBadge", locale).replace("★ ", "")}
+            </span>
+        </div>
+    </section>
+
+    {
+        services.map((service, sIdx) => {
+            const projects = allProjects.filter(
+                (p) => p.data.solutionType === service.id,
+            );
+
+            if (projects.length === 0) return null;
+            return (
+                <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+                    <div
+                        class="reveal mb-6 flex items-center gap-4 pb-4 border-b border-border-default"
+                        data-delay={sIdx + 1}
+                    >
+                        <span class="font-mono text-xs font-bold tracking-widest text-accent-primary">
+                            0{sIdx + 1}
+                        </span>
+                        <div class="inline-flex items-center justify-center geom-cut-sm w-[36px] h-[36px] bg-accent-primary/12 text-accent-primary">
+                            <Icon name={service.icon} size={18} />
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-bold leading-tight text-text-primary">
+                                {t(`services.title${sIdx + 1}`, locale)}
+                            </h2>
+                            <p class="text-sm text-text-secondary">
+                                {t(`services.desc${sIdx + 1}`, locale)}
+                            </p>
+                        </div>
+                        <span class="font-mono text-[0.7rem] uppercase tracking-widest text-text-disabled">
+                            {projects.length}{" "}
+                            {projects.length === 1
+                                ? t("projects.caseStudy", locale).toLowerCase()
+                                : `${t("projects.caseStudy", locale).toLowerCase()}s`}
+                        </span>
+                    </div>
+
+                    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {projects.map((p, i) => (
+                            <Card
+                                href={`/${locale}/proyectos/${p.data.code}`}
+                                class="reveal h-full"
+                                data-delay={i + 1}
+                            >
+                                <article class="h-full flex flex-col">
+                                    {
+                                        p.data.coverImage && (
+                                            <div class="aspect-[1200/630] overflow-hidden border-b border-border-default">
+                                                <img
+                                                    src={p.data.coverImage}
+                                                    alt=""
+                                                    class="w-full h-full object-cover"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                        )
+                                    }
+                                    <div class="flex items-center justify-between mb-3 px-4 pt-4">
+                                        <time
+                                            class="font-mono text-xs text-text-disabled"
+                                            datetime={p.data.date.toISOString()}
+                                        >
+                                            {formatDate(p.data.date, locale)}
+                                        </time>
+                                        {p.data.featured && (
+                                            <Badge variant="warning">
+                                                {t(
+                                                    "projects.featuredBadge",
+                                                    locale,
+                                                )}
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    <h3 class="text-lg font-bold mb-2 leading-tight text-text-primary px-4">
+                                        {p.data.title}
+                                    </h3>
+                                    <p class="text-sm flex-1 text-text-secondary leading-relaxed line-clamp-3 px-4">
+                                        {p.data.problem}
+                                    </p>
+                                    <div class="mt-4 flex flex-wrap gap-1.5 px-4">
+                                        {p.data.stack
+                                            .slice(0, 4)
+                                            .map((tech) => (
+                                                <span class="badge geom-cut-sm badge-primary text-xs font-mono">
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                    </div>
+                                    <div class="mt-4 pt-3 border-t flex items-center justify-between border-border-default px-4 pb-4">
+                                        <span class="font-mono text-[0.65rem] uppercase tracking-widest text-text-disabled">
+                                            {tInterpolate(
+                                                "projects.caseRef",
+                                                locale,
+                                                { code: p.data.code },
+                                            )}
+                                        </span>
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-accent-primary">
+                                            {t("projects.view", locale)}
+                                            <Icon name="arrow" size={12} />
+                                        </span>
+                                    </div>
+                                </article>
+                            </Card>
+                        ))}
+                    </div>
+                </section>
+            );
+        })
+    }
+</BaseLayout>
+
+<style>
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

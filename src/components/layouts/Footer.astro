@@ -1,0 +1,132 @@
+---
+import { siteConfig } from "@data/site";
+import { socialLinks } from "@data/social";
+import { mainNav } from "@data/nav";
+import Icon from "@components/ui/Icon.astro";
+import { t, type Locale } from "@i18n/index";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer
+    class="border-t mt-10 bg-bg border-border-default"
+>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div class="grid gap-8 md:grid-cols-12">
+            <div class="md:col-span-5">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span
+                        class="logo-mark geom-cut-sm"
+                        style="width:28px;height:28px;"></span>
+                    <span
+                        class="font-mono text-sm font-bold text-text-primary"
+                    >
+                        {t("siteConfig.author", locale)}
+                    </span>
+                </div>
+                <p class="text-sm text-text-secondary max-w-sm leading-relaxed mb-5">
+                    {t("siteConfig.role", locale)} {t("footer.description", locale)}
+                </p>
+
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 font-mono text-[0.7rem] bg-accent-success/8 text-accent-success rounded-soft border border-accent-success/20"
+                >
+                    <span class="status-dot"></span>
+                    {t("footer.availableFor", locale)}
+                </div>
+            </div>
+
+            <nav class="md:col-span-3" aria-label={t("footer.navigation", locale)}>
+                <h2
+                    class="font-mono text-xs uppercase tracking-wider mb-4 text-text-disabled"
+                >
+                    {t("footer.navigation", locale)}
+                </h2>
+                <ul class="space-y-2">
+                    {
+                        mainNav.map((item) => (
+                            <li>
+                                <a
+                                    href={item.href.startsWith("/") ? `/${locale}${item.href}` : item.href}
+                                    class="text-sm transition-colors inline-flex items-center gap-2 group text-text-primary"
+                                    onmouseover="this.style.color='var(--accent-primary)'"
+                                    onmouseout="this.style.color='var(--text-primary)'"
+                                >
+                                    <span
+                                        class="font-mono text-[0.65rem] opacity-0 group-hover:opacity-100 transition-opacity text-accent-primary"
+                                    >
+                                        →
+                                    </span>
+                                    {t(item.labelKey, locale)}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
+
+            <div class="md:col-span-4">
+                <h2
+                    class="font-mono text-xs uppercase tracking-wider mb-4 text-text-disabled"
+                >
+                    {t("footer.social", locale)}
+                </h2>
+                <ul class="space-y-2">
+                    {
+                        socialLinks.map((s) => (
+                            <li>
+                                <a
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center gap-2.5 text-sm transition-colors group text-text-primary"
+                                    onmouseover="this.style.color='var(--accent-primary)'"
+                                    onmouseout="this.style.color='var(--text-primary)'"
+                                >
+                                    <Icon name={s.icon} size={16} />
+                                    <span class="flex-1">{t(s.labelKey, locale)}</span>
+                                    <span
+                                        class="font-mono text-[0.7rem] text-text-disabled"
+                                    >
+                                        {t(s.handleKey, locale)}
+                                    </span>
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="mt-10 pt-6 border-t flex flex-col sm:flex-row justify-between gap-4 text-xs border-border-default text-text-disabled"
+        >
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono">
+                <span>© {year} {t("siteConfig.author", locale)}</span>
+                <span class="text-border-default">·</span>
+                <span>{t("footer.builtWith", locale)}</span>
+                <span class="text-border-default">·</span>
+                <span
+                    class="inline-flex items-center gap-1.5 text-accent-success"
+                >
+                    <span class="status-dot"></span>
+                    {t("footer.allOperational", locale)}
+                </span>
+            </div>
+            <div class="flex items-center gap-4 font-mono">
+                <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:underline text-text-disabled"
+                >
+                    {t("footer.sourceCode", locale)}
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>

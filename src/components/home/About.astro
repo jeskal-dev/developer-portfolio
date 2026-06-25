@@ -1,0 +1,98 @@
+---
+import { t, type Locale } from "@i18n/index";
+import { siteConfig } from "@data/site";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<section id="about" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16">
+        <div class="lg:col-span-4">
+            <div class="lg:sticky lg:top-24">
+                <p class="eyebrow reveal mb-5">
+                    {t("about.eyebrow", locale)}
+                </p>
+                <h2
+                    class="reveal text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.05] text-text-primary"
+                    data-delay="1"
+                >
+                    {t("about.heading1", locale)}
+                    <span class="text-accent-primary">{t("about.heading2", locale)}</span>
+                    {t("about.heading3", locale)}
+                </h2>
+
+                <div
+                    class="reveal mt-8 p-5 border border-border-default rounded-soft bg-card"
+                    data-delay="2"
+                >
+                    <p
+                        class="font-mono text-[0.65rem] uppercase tracking-widest mb-3 text-text-disabled"
+                    >
+                        {t("about.techSheet", locale)}
+                    </p>
+                    <dl class="space-y-2 text-sm font-mono">
+                        <div class="flex justify-between gap-3">
+                            <dt class="text-text-disabled">{t("about.role", locale)}</dt>
+                            <dd class="text-text-primary">
+                                {siteConfig.role}
+                            </dd>
+                        </div>
+                        <div class="flex justify-between gap-3">
+                            <dt class="text-text-disabled">{t("about.stack", locale)}</dt>
+                            <dd class="text-text-primary">
+                                {siteConfig.primaryStack.join(" · ")}
+                            </dd>
+                        </div>
+                        <div class="flex justify-between gap-3">
+                            <dt class="text-text-disabled">{t("about.locale", locale)}</dt>
+                            <dd class="text-text-primary">
+                                {locale}
+                            </dd>
+                        </div>
+                        <div class="flex justify-between gap-3">
+                            <dt class="text-text-disabled">{t("about.status", locale)}</dt>
+                            <dd class="text-accent-success">
+                                <span
+                                    class="status-dot inline-block mr-1.5 align-middle"
+                                ></span>
+                                {t("about.available", locale)}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8">
+            <div class="space-y-6">
+                {["about.para1", "about.para2", "about.para3"].map((key, i) => (
+                    <p
+                        class="reveal text-lg md:text-xl leading-relaxed text-text-secondary"
+                        data-delay={i + 1}
+                    >
+                        {t(key, locale)}
+                    </p>
+                ))}
+            </div>
+
+            <div
+                class="reveal mt-12 pt-8 border-t border-border-default"
+                data-delay="4"
+            >
+                <blockquote
+                    class="text-2xl md:text-3xl font-bold leading-tight tracking-tight text-text-primary font-display"
+                >
+                    {t("about.blockquote", locale)}
+                </blockquote>
+                <p
+                    class="mt-4 font-mono text-xs uppercase tracking-widest text-text-disabled"
+                >
+                    {t("about.blockquoteAttr", locale)}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,53 @@
+---
+locale: "en"
+title: "Plataforma E-commerce B2B"
+code: "ecommerce-b2b"
+solutionType: "web-app"
+stack: ["React", "NestJS", "PostgreSQL", "Stripe"]
+featured: true
+date: 2024-11-20
+client: "Industria Distribución S.L."
+duration: "6 meses"
+problem: "El cliente gestionaba su catálogo B2B mediante hojas de cálculo y pedidos por email, lo que provocaba errores de inventario, retrasos en facturación y una experiencia pobre para los compradores corporativos que necesitaban volúmenes y precios negociados por contrato."
+solution: "Se desarrolló una SPA con React + Vite, conectada a un backend NestJS modular con autenticación JWT, roles por cuenta corporativa y pricing dinámico basado en contratos. La base de datos PostgreSQL se modeló con Prisma e incluye versionado de precios históricos. La integración con Stripe maneja pagos B2B con factura y plazos."
+results: "Aumento del 40% en conversión de pedidos, reducción del 90% en errores de inventario y reducción del tiempo medio de checkout de 8 minutos a 90 segundos. El cliente amplió el catálogo de 2.000 a 12.000 referencias sin impacto en rendimiento."
+seoDescription: "Caso de estudio: plataforma e-commerce B2B construida con React, NestJS y PostgreSQL. Aumento del 40% en conversión."
+---
+
+## Contexto del Cliente
+
+El cliente es un distribuidor B2B con más de 800 compradores corporativos activos. Cada comprador tiene precios
+negociados por contrato, listas personalizadas de productos y plazos de pago diferentes. La gestión manual
+provocaba inconsistencias entre lo que veía el cliente y lo que facturaba el ERP.
+
+## Arquitectura Técnica
+
+```mermaid
+flowchart LR
+    A[React SPA] -- HTTPS --> B[NestJS API]
+    B --> C[(PostgreSQL + Prisma)]
+
+    B -- pagos B2B --> D[Stripe]
+    B -- cache de catálogo --> E[Redis]
+    B -- assets de producto --> F[S3]
+```
+
+El backend NestJS está dividido en módulos: `auth`, `catalog`, `pricing`, `orders`, `payments`. Cada módulo
+expone su propio DTO con validación `class-validator` y se integra a un sistema de eventos interno para
+desacoplar efectos secundarios (auditoría, notificaciones, sync con ERP).
+
+## Decisiones Clave
+
+- **Pricing dinámico:** el precio final se calcula por request combinando contrato + volumen + promociones
+  vigentes, cacheado en Redis con TTL de 60s.
+- **Auth por cuenta:** JWT con claims `accountId` y `role`; los guards de NestJS validan permisos a nivel
+  de endpoint y de recurso.
+- **Catálogo versionado:** cada cambio de precio genera una nueva fila con `validFrom`/`validTo`, lo que
+  permite regenerar facturas históricas.
+
+## Resultados y Aprendizajes
+
+La migración fue por fases: primero catálogo, luego pedidos y finalmente pagos. El mayor aprendizaje fue
+que **el pricing dinámico requiere un modelo de datos pensado para auditoría desde el día uno**; refactorizar
+esto a posteriori es muy costoso. El rendimiento fue excelente incluso con 12.000 referencias gracias al
+cache y a índices PostgreSQL bien diseñados.

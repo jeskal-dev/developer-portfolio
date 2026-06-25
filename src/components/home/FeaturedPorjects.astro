@@ -1,0 +1,175 @@
+---
+import { t, tInterpolate, formatDate, localizePath, type Locale } from "@i18n/index";
+import { getCollection } from "astro:content";
+import Card from "@components/ui/Card.astro";
+import Badge from "@components/ui/Badge.astro";
+import Icon from "@components/ui/Icon.astro";
+import { services } from "@data/services";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+
+const allProjects = await getCollection("projects");
+const featured = allProjects
+    .filter((p) => p.data.featured && p.data.locale === locale)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, 3);
+
+const [primary, ...secondary] = featured;
+
+function getServiceTitle(tipo: string) {
+    const service = services.find((s) => s.id === tipo);
+    return service ? t(service.titleKey, locale) : tipo;
+}
+---
+
+<section id="proyectos-destacados" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div class="mb-12 flex items-end justify-between flex-wrap gap-4">
+        <div>
+            <p class="eyebrow reveal mb-4">{t("featured.eyebrow", locale)}</p>
+            <h2
+                class="reveal text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.05] text-text-primary"
+                data-delay="1"
+            >
+                {t("featured.heading", locale)}
+            </h2>
+            <p
+                class="reveal mt-4 text-base md:text-lg max-w-2xl text-text-secondary"
+                data-delay="2"
+            >
+                {t("featured.description", locale)}
+            </p>
+        </div>
+        <a href={localizePath("/proyectos", locale)} class="link-arrow reveal" data-delay="3">
+            {t("featured.viewAll", locale)}
+            <Icon name="arrow" size={16} />
+        </a>
+    </div>
+
+    {
+        primary && (
+            <div class="grid lg:grid-cols-12 gap-4 mb-4">
+                <Card
+                    href={localizePath(`/proyectos/${primary.data.code}`, locale)}
+                    cutSize="lg"
+                    class="lg:col-span-8 reveal"
+                >
+                    <article class="flex flex-col h-full">
+                        <div class="featured-thumb geom-cut-md">
+                            {
+                                primary.data.coverImage
+                                    ? <img src={primary.data.coverImage} alt="" class="absolute inset-0 w-full h-full object-cover" />
+                                    : <div class="featured-thumb-pattern" />
+                            }
+                            <div class="absolute top-4 left-4 flex items-center gap-2">
+                                <Badge variant="warning">{t("featured.featured", locale)}</Badge>
+                                <span class="badge geom-cut-sm badge-primary text-xs">
+                                    {getServiceTitle(primary.data.solutionType)}
+                                </span>
+                            </div>
+                            <div
+                                class="absolute bottom-4 right-4 font-mono text-[0.65rem] px-2 py-1 bg-black/60 text-accent-primary rounded-sm"
+                            >
+                                {tInterpolate("featured.caseStudyRef", locale, { code: primary.data.code })}
+                            </div>
+                        </div>
+
+                        <div class="p-6 md:p-8 flex flex-col h-full">
+                            <div class="flex items-center gap-3 mb-3">
+                                <time
+                                    class="font-mono text-xs text-text-disabled"
+                                    datetime={primary.data.date.toISOString()}
+                                    >
+                                        {formatDate(primary.data.date, locale)}
+                                </time>
+                                {primary.data.client && (
+                                    <span
+                                        class="font-mono text-xs text-text-disabled"
+                                    >
+                                        · {primary.data.client}
+                                    </span>
+                                )}
+                            </div>
+
+                            <h3
+                                class="text-2xl md:text-3xl font-bold mb-3 leading-tight text-text-primary font-display"
+                            >
+                                {primary.data.title}
+                            </h3>
+
+                            <p class="text-sm md:text-base mb-5 text-text-secondary leading-relaxed line-clamp-3">
+                                {primary.data.results}
+                            </p>
+
+                            <div class="flex flex-wrap gap-1.5 mb-6 mt-auto">
+                                {primary.data.stack.map((tech) => (
+                                    <span class="badge geom-cut-sm badge-primary text-xs font-mono">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <div class="link-arrow">
+                                {t("featured.viewCase", locale)}
+                                <Icon name="arrow" size={16} />
+                            </div>
+                        </div>
+                    </article>
+                </Card>
+
+                <div class="lg:col-span-4 grid gap-4">
+                    {secondary.map((p, i) => (
+                        <Card
+                            href={localizePath(`/proyectos/${p.data.code}`, locale)}
+                            class="reveal h-full"
+                            data-delay={i + 1}
+                        >
+                            <article class="h-full flex flex-col">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="badge geom-cut-sm badge-primary text-xs">
+                                        {getServiceTitle(p.data.solutionType)}
+                                    </span>
+                                    <time
+                                        class="font-mono text-xs text-text-disabled"
+                                        datetime={p.data.date.toISOString()}
+                                    >
+                                        {formatDate(p.data.date, locale)}
+                                    </time>
+                                </div>
+
+                                <h3
+                                    class="text-lg font-bold mb-2 leading-tight text-text-primary"
+                                >
+                                    {p.data.title}
+                                </h3>
+
+                                <p class="text-sm mb-4 flex-1 text-text-secondary leading-relaxed line-clamp-2">
+                                    {p.data.results}
+                                </p>
+
+                                <div class="flex flex-wrap gap-1.5 mb-4">
+                                    {p.data.stack.slice(0, 3).map((tech) => (
+                                        <span
+                                            class="font-mono text-xs px-2 py-0.5 text-text-secondary bg-bg rounded-sm"
+                                        >
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <div
+                                    class="inline-flex items-center gap-1.5 text-sm font-mono font-bold text-accent-primary"
+                                >
+                                    {t("featured.viewCase", locale)}
+                                    <Icon name="arrow" size={14} />
+                                </div>
+                            </article>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        )
+    }
+</section>

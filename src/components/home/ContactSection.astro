@@ -1,0 +1,197 @@
+---
+import { t, type Locale } from "@i18n/index";
+import { siteConfig } from "@data/site";
+import { socialLinks } from "@data/social";
+import Button from "@components/ui/Button.astro";
+import Icon from "@components/ui/Icon.astro";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<section id="contact" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div class="mb-8">
+        <p class="eyebrow eyebrow-accent reveal mb-4">
+            <span class="status-dot"></span>
+            {t("contact.eyebrow", locale)}
+        </p>
+    </div>
+
+    <div class="card-wrapper reveal" data-delay="1">
+        <div
+            class="card-inner geom-cut-lg relative overflow-hidden"
+            style="padding: clamp(1.75rem, 4vw, 3.5rem);"
+        >
+            <div
+                class="absolute -right-20 -top-20 pointer-events-none w-[400px] h-[400px]"
+                style="background:radial-gradient(circle, oklch(0.7 0.15 220 / 0.18) 0%, transparent 70%);"
+            >
+            </div>
+
+            <span
+                class="coord-mark tl absolute top-[14px] left-[14px] w-[14px] h-[14px] opacity-60"
+                style="border-top:1px solid var(--border-default);border-left:1px solid var(--border-default);"
+            ></span>
+            <span
+                class="coord-mark br absolute bottom-[14px] right-[14px] w-[14px] h-[14px] opacity-60"
+                style="border-bottom:1px solid var(--border-default);border-right:1px solid var(--border-default);"
+            ></span>
+
+            <div class="relative grid lg:grid-cols-12 gap-8 lg:gap-10">
+                <div class="lg:col-span-7">
+                    <h2
+                        class="text-3xl md:text-5xl font-extrabold tracking-tight mb-5 leading-[1.05] text-text-primary"
+                    >
+                        {t("contact.heading1", locale)}
+                        <span class="text-accent-primary"
+                            >{t("contact.heading2", locale)}</span
+                        >.
+                    </h2>
+                    <p
+                        class="text-base md:text-lg mb-8 text-text-secondary leading-relaxed max-w-xl"
+                    >
+                        {t("contact.description", locale)}
+                    </p>
+
+                    <div class="mb-8">
+                        <p
+                            class="font-mono text-[0.65rem] uppercase tracking-widest mb-2 text-text-disabled"
+                        >
+                            {t("contact.runCommand", locale)}
+                        </p>
+                        <div
+                            class="inline-flex items-center gap-3 px-4 py-3 font-mono text-sm md:text-base bg-bg border border-border-default rounded-soft text-text-primary"
+                        >
+                            <span class="text-accent-success">$</span>
+                            <span>mail</span>
+                            <span class="text-accent-primary">→</span>
+                            <a
+                                href={`mailto:${siteConfig.email}`}
+                                class="text-text-primary no-underline"
+                                style="border-bottom: 1px dashed var(--accent-primary); padding-bottom: 1px;"
+                            >
+                                {siteConfig.email}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3">
+                        <Button
+                            href={`mailto:${siteConfig.email}`}
+                            variant="cta"
+                        >
+                            <Icon name="mail" size={18} />
+                            {t("contact.sendEmail", locale)}
+                            <Icon name="arrow" size={16} />
+                        </Button>
+                        {
+                            siteConfig.cvUrl && (
+                                <Button
+                                    href={siteConfig.cvUrl}
+                                    variant="secondary"
+                                    download
+                                >
+                                    <Icon name="download" size={16} />
+                                    {t("contact.downloadCV", locale)}
+                                </Button>
+                            )
+                        }
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div
+                        class="p-5 border bg-bg border-border-default rounded-soft"
+                    >
+                        <p
+                            class="font-mono text-[0.65rem] uppercase tracking-widest mb-4 text-text-disabled"
+                        >
+                            {t("contact.systemStatus", locale)}
+                        </p>
+
+                        <dl class="space-y-3 text-sm font-mono">
+                            <div class="flex justify-between gap-3">
+                                <dt class="text-text-disabled">
+                                    {t("contact.availability", locale)}
+                                </dt>
+                                <dd class="text-accent-success">
+                                    <span
+                                        class="status-dot inline-block mr-1.5 align-middle"
+                                    ></span>
+                                    {t("contact.available", locale)}
+                                </dd>
+                            </div>
+                            <div class="flex justify-between gap-3">
+                                <dt class="text-text-disabled">
+                                    {t("contact.response", locale)}
+                                </dt>
+                                <dd class="text-text-primary">
+                                    {t("contact.responseValue", locale)}
+                                </dd>
+                            </div>
+                            <div class="flex justify-between gap-3">
+                                <dt class="text-text-disabled">
+                                    {t("contact.timezone", locale)}
+                                </dt>
+                                <dd class="text-text-primary">
+                                    {t("contact.timezoneValue", locale)}
+                                </dd>
+                            </div>
+                            <div class="flex justify-between gap-3">
+                                <dt class="text-text-disabled">
+                                    {t("contact.languages", locale)}
+                                </dt>
+                                <dd class="text-text-primary">
+                                    {t("contact.languagesValue", locale)}
+                                </dd>
+                            </div>
+                            <div class="flex justify-between gap-3">
+                                <dt class="text-text-disabled">
+                                    {t("contact.modality", locale)}
+                                </dt>
+                                <dd class="text-text-primary">
+                                    {t("contact.modalityValue", locale)}
+                                </dd>
+                            </div>
+                        </dl>
+
+                        <div class="mt-5 pt-5 border-t border-border-default">
+                            <p
+                                class="font-mono text-[0.65rem] uppercase tracking-widest mb-3 text-text-disabled"
+                            >
+                                {t("contact.alsoOn", locale)}
+                            </p>
+                            <div class="flex flex-col gap-2">
+                                {
+                                    socialLinks.map((s) => (
+                                        <a
+                                            href={s.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="inline-flex items-center gap-2.5 px-3 py-2 transition-all bg-card border border-border-default text-text-primary rounded-soft"
+                                            onmouseover="this.style.borderColor='var(--accent-primary)'; this.style.color='var(--accent-primary)'"
+                                            onmouseout="this.style.borderColor='var(--border-default)'; this.style.color='var(--text-primary)'"
+                                        >
+                                            <Icon name={s.icon} size={16} />
+                                            <span class="text-sm font-medium flex-1">
+                                                {s.label}
+                                            </span>
+                                            {s.handle && (
+                                                <span class="font-mono text-[0.7rem] text-text-disabled">
+                                                    {s.handle}
+                                                </span>
+                                            )}
+                                            <Icon name="external" size={12} />
+                                        </a>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

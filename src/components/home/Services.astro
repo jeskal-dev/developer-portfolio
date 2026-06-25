@@ -1,0 +1,91 @@
+---
+import { t, type Locale } from "@i18n/index";
+import { services } from "@data/services";
+import Icon from "@components/ui/Icon.astro";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<section id="servicios" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div class="mb-12 flex items-end justify-between flex-wrap gap-4">
+        <div>
+            <p class="eyebrow reveal mb-4">{t("services.eyebrow", locale)}</p>
+            <h2
+                class="reveal text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.05] text-text-primary"
+                data-delay="1"
+            >
+                {t("services.heading", locale)}
+            </h2>
+            <p
+                class="reveal mt-4 text-base md:text-lg max-w-2xl text-text-secondary"
+                data-delay="2"
+            >
+                {t("services.description", locale)}
+            </p>
+        </div>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+        {
+            services.map((s, i) => (
+                <article
+                    class="card-wrapper reveal h-full group"
+                    data-delay={i + 1}
+                >
+                    <div
+                        class="card-inner geom-cut-md h-full flex flex-col p-cut-md"
+                    >
+                        <div class="flex items-start justify-between mb-5">
+                            <span
+                                class="font-mono text-xs font-bold tracking-widest text-accent-primary"
+                            >
+                                0{i + 1}
+                            </span>
+                            <div
+                                class="inline-flex items-center justify-center geom-cut-sm w-[42px] h-[42px] bg-accent-primary/12 text-accent-primary"
+                            >
+                                <Icon name={s.icon} size={20} />
+                            </div>
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold mb-3 leading-tight text-text-primary font-display"
+                        >
+                            {t(s.titleKey, locale)}
+                        </h3>
+                        <p class="text-sm mb-5 text-text-secondary leading-relaxed flex-1">
+                            {t(s.descKey, locale)}
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 mb-5">
+                            {s.stack.map((tech) => (
+                                <span class="badge geom-cut-sm badge-primary text-xs font-mono">
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+
+                        <div
+                            class="pt-4 border-t flex items-center justify-between border-border-default"
+                        >
+                            <span
+                                class="font-mono text-[0.7rem] uppercase tracking-widest text-text-disabled"
+                            >
+                                stack/{s.id.toLowerCase().replace(/\s/g, "-")}
+                            </span>
+                            <span
+                                class="inline-flex items-center justify-center w-6 h-6 text-accent-primary"
+                                style="transition: transform 0.2s var(--ease-cut);"
+                            >
+                                <Icon name="arrow" size={14} />
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            ))
+        }
+    </div>
+</section>

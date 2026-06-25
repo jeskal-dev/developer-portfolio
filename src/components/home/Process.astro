@@ -1,0 +1,99 @@
+---
+import { t, tInterpolate, type Locale } from "@i18n/index";
+import { processSteps } from "@data/process";
+import Icon from "@components/ui/Icon.astro";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<section id="proceso" class="relative max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div class="mb-12">
+        <p class="eyebrow reveal mb-4">{t("process.eyebrow", locale)}</p>
+        <h2
+            class="reveal text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.05] text-text-primary"
+            data-delay="1"
+        >
+            {t("process.heading", locale)}
+        </h2>
+        <p
+            class="reveal mt-4 text-base md:text-lg max-w-2xl text-text-secondary"
+            data-delay="2"
+        >
+            {t("process.description", locale)}
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4">
+        {
+            processSteps.map((step, i) => (
+                <article class="card-wrapper reveal h-full" data-delay={i + 1}>
+                    <div
+                        class="card-inner geom-cut-md h-full flex flex-col p-cut-md"
+                    >
+                        <div
+                            class="flex items-center gap-3 mb-6 pb-4 border-b border-border-default"
+                        >
+                            <span class="step-index text-2xl">
+                                {step.index}
+                            </span>
+                            <span
+                                class="flex-1 h-px"
+                                style="background: linear-gradient(90deg, var(--accent-primary), transparent);"
+                            />
+                            <span
+                                class="font-mono text-[0.65rem] uppercase tracking-widest text-text-disabled"
+                            >
+                                {tInterpolate("process.phase", locale, { n: i + 1 })}
+                            </span>
+                        </div>
+
+                        <h3
+                            class="text-xl font-bold mb-3 text-text-primary font-display"
+                        >
+                            {t(`process.step${i + 1}Title`, locale)}
+                        </h3>
+
+                        <p class="text-sm text-text-secondary leading-relaxed mb-6 flex-1">
+                            {t(`process.step${i + 1}Desc`, locale)}
+                        </p>
+
+                        <div>
+                            <p
+                                class="font-mono text-[0.65rem] uppercase tracking-widest mb-3 text-text-disabled"
+                            >
+                                {t("process.deliverables", locale)}
+                            </p>
+                            <ul class="space-y-2">
+                                {step.artifacts.map((_, j) => (
+                                    <li
+                                        class="flex items-center gap-2 text-sm font-mono text-text-secondary"
+                                    >
+                                        <Icon
+                                            name="check"
+                                            size={14}
+                                            class="inline-block flex-shrink-0"
+                                        />
+                                        <span>{t(`process.step${i + 1}Art${j + 1}`, locale)}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            ))
+        }
+    </div>
+
+    <div
+        class="reveal mt-8 flex items-center gap-3 text-sm text-text-disabled"
+        data-delay="4"
+    >
+        <Icon name="clock" size={14} />
+        <span class="font-mono">
+            {t("process.cycle", locale)}
+        </span>
+    </div>
+</section>

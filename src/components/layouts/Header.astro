@@ -1,0 +1,158 @@
+---
+import { siteConfig } from "@data/site";
+import { mainNav } from "@data/nav";
+import Icon from "@components/ui/Icon.astro";
+import ThemeToggle from "@components/ui/ThemeToggle.tsx";
+import { t, localizePath, type Locale } from "@i18n/index";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<header
+    id="site-header"
+    class="sticky top-0 z-50 backdrop-blur-md border-b bg-bg/78 border-border-default"
+>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between h-16">
+                <a
+                    href={`/${locale}/`}
+                    class="flex items-center gap-2.5 group"
+                    aria-label={t("siteConfig.name", locale)}
+            >
+                <span class="logo-mark geom-cut-sm"></span>
+                <span
+                    class="font-mono text-sm font-bold tracking-tight text-text-primary"
+                >
+                    {t("siteConfig.author", locale)}
+                </span>
+                <span
+                    class="hidden sm:inline-flex items-center gap-1.5 ml-1 px-2 py-0.5 text-[0.65rem] font-mono text-accent-success bg-accent-success/10 rounded-sm"
+                >
+                    <span class="status-dot"></span>
+                    {t("nav.disponible", locale)}
+                </span>
+            </a>
+
+            <nav
+                class="hidden md:flex items-center gap-0"
+                aria-label={t("nav.navPrincipal", locale)}
+            >
+                {
+                    mainNav.map((item) => (
+                        <a
+                            href={item.href.startsWith("/") ? `/${locale}${item.href}` : item.href}
+                            class="nav-link"
+                            data-nav-link
+                        >
+                            {t(item.labelKey, locale)}
+                        </a>
+                    ))
+                }
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <a
+                    href={pathname.replace(/^\/[a-z]{2}/, `/${locale === "en" ? "es" : "en"}`) || `/${locale === "en" ? "es" : "en"}/`}
+                    class="locale-toggle inline-flex items-center justify-center w-10 h-10 bg-transparent text-text-primary border border-border-default rounded-soft cursor-pointer font-mono text-xs font-bold"
+                    aria-label={locale === "en" ? "Switch to Spanish" : "Cambiar a inglés"}
+                    title={locale === "en" ? "Español" : "English"}
+                >
+                    {locale === "en" ? "ES" : "EN"}
+                </a>
+                <ThemeToggle locale={locale} client:load />
+                    <a
+                        href={`mailto:${siteConfig.email}`}
+                        class="hidden sm:inline-flex btn-cta geom-cut-cta text-xs"
+                    >
+                        <Icon name="mail" size={14} />
+                        {t("nav.contactar", locale)}
+                    </a>
+
+                <button
+                    id="mobile-menu-toggle"
+                    class="md:hidden inline-flex items-center justify-center w-10 h-10 bg-transparent border border-border-default rounded-soft text-text-primary"
+                    aria-label={t("nav.abrirMenu", locale)}
+                    aria-expanded="false"
+                >
+                    <Icon name="menu" size={20} />
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div
+        id="mobile-menu"
+        class="md:hidden hidden border-t bg-bg border-border-default"
+    >
+        <nav
+            class="px-4 py-3 flex flex-col gap-1"
+            aria-label={t("nav.navMovil", locale)}
+        >
+            {
+                mainNav.map((item) => (
+                        <a
+                            href={item.href.startsWith("/") ? `/${locale}${item.href}` : item.href}
+                            class="px-3 py-2 text-sm font-medium text-text-secondary"
+                        >
+                            {t(item.labelKey, locale)}
+                        </a>
+                ))
+            }
+            <a
+                href={`mailto:${siteConfig.email}`}
+                class="mt-2 px-3 py-2 text-sm font-bold text-center btn-cta geom-cut-cta"
+            >
+                {t("nav.contactar", locale)}
+            </a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    const toggle = document.getElementById("mobile-menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    toggle?.addEventListener("click", () => {
+        const isHidden = menu?.classList.contains("hidden");
+        menu?.classList.toggle("hidden");
+        toggle.setAttribute("aria-expanded", String(isHidden));
+    });
+    function updateActiveNav() {
+        const hash = window.location.hash;
+        const navLinks = document.querySelectorAll("[data-nav-link]");
+
+        navLinks.forEach((link) => {
+            const href = link.getAttribute("href") || "";
+            const pathname = window.location.pathname;
+
+            let isActive = false;
+
+            // Caso 1: Link normal sin hash
+            if (!href.includes("#")) {
+                isActive = pathname === href || pathname.startsWith(href + "/");
+            }
+            // Caso 2: Link con hash como /#about
+            else if (href.startsWith("/#")) {
+                const linkHash = href; // "/#about"
+                isActive = pathname === "/" && hash === linkHash.slice(1);
+                // O si el hash completo coincide
+                if (!isActive) {
+                    isActive = pathname + hash === href;
+                }
+            }
+            // Caso 3: Hash relativo como #about
+            else if (href.startsWith("#")) {
+                isActive = pathname === "/" && hash === href;
+            }
+
+            link.setAttribute("data-active", String(isActive));
+        });
+    }
+    // Ejecutar al cargar
+    updateActiveNav();
+    // Ejecutar cuando cambia el hash
+    window.addEventListener("hashchange", updateActiveNav);
+</script>

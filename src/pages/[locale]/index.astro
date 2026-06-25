@@ -1,0 +1,34 @@
+---
+import BaseLayout from "@components/layouts/BaseLayout.astro";
+import Hero from "@components/home/Hero.astro";
+import StatsStrip from "@components/home/StatsStrip.astro";
+import About from "@components/home/About.astro";
+import Services from "@components/home/Services.astro";
+import FeaturedProjects from "@components/home/FeaturedPorjects.astro";
+import SkillsBoardSection from "@components/home/SkillBoardSection.astro";
+import Process from "@components/home/Process.astro";
+import DemosSection from "@components/home/DemosSection.astro";
+import ContactSection from "@components/home/ContactSection.astro";
+import type { Locale } from "@i18n/index";
+
+export async function getStaticPaths() {
+    return [
+        { params: { locale: "en" } },
+        { params: { locale: "es" } },
+    ];
+}
+
+const locale = (Astro.currentLocale ?? "en") as Locale;
+---
+
+<BaseLayout locale={locale}>
+    <Hero locale={locale} />
+    <StatsStrip locale={locale} />
+    <About locale={locale} />
+    <Services locale={locale} />
+    <FeaturedProjects locale={locale} />
+    <SkillsBoardSection locale={locale} />
+    <Process locale={locale} />
+    <DemosSection locale={locale} />
+    <ContactSection locale={locale} />
+</BaseLayout>

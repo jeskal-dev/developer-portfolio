@@ -1,0 +1,30 @@
+---
+interface Props {
+    as?: string;
+    href?: string;
+    cutSize?: "sm" | "md" | "lg";
+    class?: string;
+}
+const { as, href, cutSize = "md", class: className = "" }: Props = Astro.props;
+
+const WrapperTag = (href ? "a" : (as ?? "div")) as any;
+const cutClassRecord = {
+    sm: "geom-cut-sm",
+    md: "geom-cut-md",
+    lg: "geom-cut-lg",
+};
+const cutClass = cutClassRecord[cutSize];
+
+const wrapperProps: any = {
+    class: `card-wrapper block ${className}`,
+};
+if (href) wrapperProps.href = href;
+---
+
+<WrapperTag {...wrapperProps}>
+    <div
+        class:list={["card-inner h-full", cutClass, `p-cut-${cutSize}`]}
+    >
+        <slot />
+    </div>
+</WrapperTag>

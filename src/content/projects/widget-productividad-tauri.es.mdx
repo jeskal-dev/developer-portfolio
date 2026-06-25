@@ -1,0 +1,59 @@
+---
+locale: "es"
+title: "Widget de Productividad Multiplataforma"
+code: "widget-productividad-tauri"
+solutionType: "desktop-app"
+stack: ["Rust", "Tauri", "React", "Tokio"]
+featured: true
+date: 2024-08-12
+client: "Proyecto personal / Open Source"
+duration: "3 meses"
+problem: "Las apps de productividad desktop existentes son pesadas (Electron ~150MB) o carecen de acceso profundo al sistema operativo. Se necesitaba una herramienta que combinara un binario ligero con acceso real al filesystem, notificaciones nativas y arranque instantáneo."
+solution: "Se construyó un widget de productividad con Tauri 2.0, donde el backend Rust usa Tokio para tareas async (sync con calendario, indexación de notas) y el frontend es React. El binario final pesa 8MB en Windows y 12MB en macOS, con arranque en menos de 200ms."
+results: "Binario 18x más liviano que equivalentes en Electron. Tiempo de arranque 200ms vs 2-3s típicos. 1.500+ instalaciones orgánicas en los primeros 3 meses sin campaña de marketing."
+seoDescription: "Caso de estudio: widget desktop construido con Rust + Tauri. Binario de 8MB y arranque en 200ms."
+---
+
+## El Problema de las Apps Desktop Modernas
+
+La mayoría de aplicaciones desktop cross-platform modernas usan Electron, que empaqueta un Chromium completo.
+Esto genera binarios de 100-200MB y consumos de RAM excesivos. Para una herramienta de productividad que vive
+en el system tray, este coste es inaceptable.
+
+## Solución con Tauri + Rust
+
+Tauri usa el webview nativo del sistema operativo (WebView2 en Windows, WKWebView en macOS, WebKitGTK en Linux),
+lo que reduce el binario a lo esencial. El backend Rust se encarga de toda la lógica del sistema:
+
+```rust
+#[tauri::command]
+async fn index_notes(path: String) -> Result<Vec<Note>, String> {
+    let mut notes = Vec::new();
+    for entry in fs::read_dir(&path).map_err(|e| e.to_string())? {
+        let entry = entry.map_err(|e| e.to_string())?;
+        // indexación async con Tokio
+        notes.push(parse_note(entry.path()).await?);
+    }
+    Ok(notes)
+}
+```
+
+El frontend React se comunica con Rust vía comandos Tauri tipados, lo que da type-safety end-to-end.
+
+## Arquitectura
+
+```mermaid
+flowchart LR
+    A[React UI] -- invoke() --> B[Tauri Commands]
+    B --> C[Tokio Runtime]
+    B --> D[Filesystem]
+    B --> E[System Tray]
+    B --> F[Global Shortcuts]
+```
+
+## Resultados
+
+- **Tamaño binario:** 8MB (Windows), 12MB (macOS), 10MB (Linux)
+- **RAM en idle:** 45MB vs 200-400MB típicos en Electron
+- **Arranque:** `<200ms`
+- **Instalaciones:** 1.500+ en 3 meses, todo orgánico

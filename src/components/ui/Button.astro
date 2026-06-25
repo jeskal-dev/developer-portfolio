@@ -1,0 +1,38 @@
+---
+interface Props {
+    href?: string;
+    variant?: "cta" | "secondary";
+    type?: "button" | "submit";
+    class?: string;
+    download?: boolean;
+    "aria-label"?: string;
+}
+const {
+    href,
+    variant = "cta",
+    type = "button",
+    class: className = "",
+    download = false,
+    ...rest
+} = Astro.props;
+const ariaLabel = (rest as any)["aria-label"];
+
+const classes =
+    variant === "cta"
+        ? `btn-cta geom-cut-cta ${className}`
+        : `btn-secondary geom-cut-sm ${className}`;
+
+const Tag = href ? "a" : "button";
+const props: any = { class: classes };
+if (href) {
+    props.href = href;
+    if (download) props.download = "";
+} else {
+    props.type = type;
+}
+if (ariaLabel) props["aria-label"] = ariaLabel;
+---
+
+<Tag {...props}>
+    <slot />
+</Tag>

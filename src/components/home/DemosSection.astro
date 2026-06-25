@@ -1,0 +1,115 @@
+---
+import { t, type Locale } from "@i18n/index";
+import { demos } from "@data/demos";
+import Button from "@components/ui/Button.astro";
+import Icon from "@components/ui/Icon.astro";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+{
+    demos.length > 0 && (
+        <section id="demos" class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+            <div class="mb-12 flex items-end justify-between flex-wrap gap-4">
+                <div>
+                    <p class="eyebrow reveal mb-4">{t("demos.eyebrow", locale)}</p>
+                    <h2
+                        class="reveal text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.05] text-text-primary"
+                        data-delay="1"
+                    >
+                        {t("demos.heading", locale)}
+                    </h2>
+                    <p
+                        class="reveal mt-4 text-base md:text-lg max-w-2xl text-text-secondary"
+                        data-delay="2"
+                    >
+                        {t("demos.description", locale)}
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid gap-4">
+                {demos.map((demo, idx) => (
+                    <div class="card-wrapper reveal" data-delay={idx + 1}>
+                        <div
+                            class="card-inner geom-cut-md p-cut-md"
+                        >
+                            <div
+                                class="flex flex-wrap items-center gap-3 mb-5 pb-4 border-b font-mono text-[0.7rem] uppercase tracking-widest border-border-default text-text-disabled"
+                            >
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-accent-success"
+                                >
+                                    <span class="status-dot" />
+                                    {t("demos.buildStable", locale)}
+                                </span>
+                                <span class="text-border-default">·</span>
+                                <span>v1.0.0</span>
+                                <span class="text-border-default">·</span>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <Icon name="package" size={11} />
+                                    {t("demos.binary", locale)}
+                                </span>
+                                <span class="text-border-default">·</span>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <Icon name="cpu" size={11} />
+                                    {t("demos.stack", locale)}
+                                </span>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                                <div class="flex-1 min-w-0">
+                                    <h3
+                                        class="text-xl md:text-2xl font-bold mb-2 text-text-primary font-display"
+                                    >
+                                        {t(demo.titleKey, locale)}
+                                    </h3>
+                                    <p class="text-sm text-text-secondary leading-relaxed max-w-2xl">
+                                        {t(demo.descriptionKey, locale)}
+                                    </p>
+
+                                    {demo.platforms && (
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            {demo.platforms.map((p) => (
+                                                <span class="badge geom-cut-sm badge-primary text-xs font-mono inline-flex items-center gap-1.5">
+                                                    <Icon
+                                                        name="desktop"
+                                                        size={11}
+                                                    />
+                                                    {p.label}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div class="flex flex-wrap gap-2 md:flex-col md:min-w-[160px]">
+                                    {demo.platforms?.map((p) => (
+                                        <Button
+                                            href={p.href}
+                                            variant="secondary"
+                                            download
+                                            class="text-xs"
+                                        >
+                                            <Icon name="download" size={14} />
+                                            {p.label}
+                                        </Button>
+                                    ))}
+                                    {demo.href && (
+                                        <Button href={demo.href} variant="cta">
+                                            {demo.ctaLabel}
+                                            <Icon name="arrow" size={16} />
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    )
+}

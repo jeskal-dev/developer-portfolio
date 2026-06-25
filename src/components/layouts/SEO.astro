@@ -1,0 +1,80 @@
+---
+import { siteConfig } from "@data/site";
+import { t, type Locale } from "@i18n/index";
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    type?: "website" | "article";
+    publishedTime?: Date;
+    noindex?: boolean;
+    locale: Locale;
+}
+const {
+    title,
+    description,
+    image = "/og-default.png",
+    type = "website",
+    publishedTime,
+    noindex = false,
+    locale,
+} = Astro.props;
+
+const resolvedTitle = title ?? t("siteConfig.title", locale);
+const resolvedDescription = description ?? t("siteConfig.description", locale);
+const fullTitle = resolvedTitle;
+const pathname = Astro.url.pathname;
+const canonicalURL = new URL(pathname, Astro.site ?? siteConfig.url);
+const ogImage = new URL(image, Astro.site ?? siteConfig.url);
+
+function altLocaleURL(path: string, targetLocale: string): string {
+    const base = (Astro.site ?? siteConfig.url).toString().replace(/\/$/, "");
+    const match = path.match(/^\/(en|es)(\/|$)/);
+    if (match) {
+        return `${base}/${targetLocale}${path.slice(match[1].length + 1)}`;
+    }
+    return `${base}/${targetLocale}${path === "/" ? "" : path}`;
+}
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={resolvedDescription} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+<meta name="author" content={siteConfig.author} />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={t("siteConfig.name", locale)} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={resolvedDescription} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={locale === "en" ? "en_US" : "es_ES"} />
+<link rel="alternate" hreflang="en" href={altLocaleURL(pathname, "en")} />
+<link rel="alternate" hreflang="es" href={altLocaleURL(pathname, "es")} />
+<link rel="alternate" hreflang="x-default" href={altLocaleURL(pathname, "en")} />
+{
+    publishedTime && (
+        <meta
+            property="article:published_time"
+            content={publishedTime.toISOString()}
+        />
+    )
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={resolvedDescription} />
+<meta name="twitter:image" content={ogImage} />
+
+<meta
+    name="theme-color"
+    content="#1a1a1a"
+    media="(prefers-color-scheme: dark)"
+/>
+<meta
+    name="theme-color"
+    content="#fafafa"
+    media="(prefers-color-scheme: light)"
+/>

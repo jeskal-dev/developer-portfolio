@@ -1,0 +1,39 @@
+---
+import { t, type Locale } from "@i18n/index";
+import { stats } from "@data/stats";
+
+interface Props {
+    locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<section
+    class="border-y border-border-default bg-card"
+>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div
+            class="grid grid-cols-2 md:grid-cols-4"
+            style="--tw-divide-opacity:1; border-color: var(--border-default);"
+        >
+            {
+                stats.map((s, i) => (
+                    <div
+                        class="reveal px-5 sm:px-7 py-7 md:py-8 flex flex-col gap-2"
+                        data-delay={i + 1}
+                    >
+                        <span class="stat-value">{s.value}</span>
+                        <span class="stat-label">{t(s.labelKey, locale)}</span>
+                        {s.hintKey && (
+                            <span
+                                class="font-mono text-[0.7rem] mt-1 text-text-disabled"
+                            >
+                                {t(s.hintKey, locale)}
+                            </span>
+                        )}
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

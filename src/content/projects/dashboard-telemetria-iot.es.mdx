@@ -1,0 +1,34 @@
+---
+locale: "es"
+title: "Dashboard de Telemetría IoT"
+code: "dashboard-telemetria-iot"
+solutionType: "web-app"
+stack: ["React", "Astro", "NestJS", "WebSocket"]
+featured: false
+date: 2023-09-15
+client: "SmartCities Corp."
+duration: "4 meses"
+problem: "Una empresa de telemetría IoT necesitaba visualizar en tiempo real datos de 10.000+ sensores distribuidos en una ciudad, con alertas configurables y exportación de reportes."
+solution: "Se construyó un dashboard con Astro para la landing y documentación, y una SPA React aislada para el dashboard interactivo. El backend NestJS expone un WebSocket por sensor-grupo y un REST API para consultas históricas con TimescaleDB."
+results: "Visualización en tiempo real de 10.000 sensores con latencia <500ms. Reducción del 60% en tiempo de diagnóstico de incidentes. Reportes automáticos diarios sin intervención manual."
+seoDescription: "Dashboard de telemetría IoT con React, NestJS y WebSocket. Visualización en tiempo real de 10.000 sensores."
+---
+
+## El Reto de la Visualización en Tiempo Real
+
+Mostrar datos de 10.000 sensores en tiempo real requiere arquitectura pensada: ni polling REST ni WebSocket
+ingenuo escalan. La solución combinó WebSockets agrupados por zona geográfica y un frontend que virtualiza
+las filas del grid.
+
+## Stack y Decisiones
+
+- **Astro para la capa estática:** landing, docs y login son páginas SSG con SEO perfecto.
+- **SPA React para el dashboard:** una vez autenticado, el usuario entra en una isla React que gestiona
+  el estado complejo del dashboard (filtros, zoom temporal, múltiples series).
+- **WebSocket con backpressure:** el backend NestJS envía solo cambios diferenciales y aplica throttling
+  por cliente. TimescaleDB permite consultas históricas eficientes con continuous aggregates.
+
+## Resultados
+
+Latencia de actualización `<500ms` para 10.000 sensores simultáneos, con un consumo de banda ancha por
+cliente de solo 80KB/s. La virtualización del grid permite mostrar 100.000 filas sin degradar el FPS.

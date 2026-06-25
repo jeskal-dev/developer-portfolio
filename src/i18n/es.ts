@@ -1,0 +1,246 @@
+const es = {
+  nav: {
+    home: "Inicio",
+    skills: "Habilidades",
+    contact: "Contacto",
+    projects: "Proyectos",
+    contactar: "Contactar",
+    disponible: "Disponible",
+    abrirMenu: "Abrir men\u00fa",
+    navPrincipal: "Navegaci\u00f3n principal",
+    navMovil: "Navegaci\u00f3n m\u00f3vil",
+  },
+  hero: {
+    systemOnline: "System online \u00b7 Disponible para proyectos",
+    tagline:
+      "Ingeniero Fullstack \u00b7 Construyo software de alto rendimiento",
+    summary:
+      "Especialista en TypeScript, Rust/Tauri y Java/Spring Boot. Dise\u00f1o aplicaciones web, desktop y backends empresariales con foco en rendimiento, seguridad y experiencia de desarrollo.",
+    sendEmail: "Enviar email",
+    downloadCV: "Descargar CV",
+    timezone: "timezone CET",
+    respondsIn: "responde en <24h",
+    ecosystems: "{n} ecosistemas",
+    stackConfig: "stack.config \u00b7 boot",
+    figDev: "fig.01 \u2014 dev environment",
+    version: "v.2025.01",
+    terminalWhoami: "whoami",
+    terminalCat: "cat stack.config",
+    terminalStatus: "status --availability",
+    accepting: "accepting projects \u00b7 q1 2025",
+  },
+  about: {
+    eyebrow: "Sobre m\u00ed \u00b7 Filosof\u00eda de trabajo",
+    heading1: "Software que se puede",
+    heading2: "mantener",
+    heading3: ", no solo lanzar.",
+    techSheet: "Ficha t\u00e9cnica",
+    role: "role",
+    stack: "stack",
+    locale: "locale",
+    status: "status",
+    available: "available",
+    blockquote:
+      '"Si el c\u00f3digo no se puede explicar en una servilleta, es demasiado complejo."',
+    blockquoteAttr:
+      "\u2014 principio de dise\u00f1o que aplico en cada proyecto",
+    para1:
+      "Construyo software que tiene que aguantar tr\u00e1fico real, clientes pagando y equipos manteni\u00e9ndolo despu\u00e9s de que yo me vaya. Por eso priorizo tres cosas: arquitecturas que se puedan explicar en una servilleta, c\u00f3digo que se pueda leer sin contexto, y decisiones t\u00e9cnicas que se puedan revertir.",
+    para2:
+      "Trabajo en tres ecosistemas porque cada uno resuelve un problema diferente. TypeScript para productos web donde la iteraci\u00f3n r\u00e1pida y la UX son la ventaja. Rust + Tauri para apps desktop que necesitan ser ligeras, seguras y nativas. Java + Spring Boot para backends empresariales donde la integridad transaccional y la integraci\u00f3n con sistemas legacy son no-negociables.",
+    para3:
+      "No tomo proyectos donde no pueda entregar algo production-ready. Si el brief pide algo que no puedo ejecutar bien \u2014ya sea por tiempo, stack o madurez del problema\u2014 te lo digo en la primera llamada y te derivo a alguien de confianza.",
+  },
+  services: {
+    eyebrow: "System / 01 \u00b7 Servicios",
+    heading: "Tres formas de construir",
+    description:
+      "Cada tipo de problema pide un stack y una arquitectura diferente. El orden va del cliente al servidor.",
+    title1: "Aplicaciones Web",
+    desc1:
+      "SPAs y SSR con React, Astro y NestJS. Arquitecturas escalables, UX cuidada y rendimiento de primer nivel.",
+    title2: "Aplicaciones Desktop",
+    desc2:
+      "Apps nativas multiplataforma con Rust + Tauri. Binarios ligeros, arranque instant\u00e1neo y acceso al sistema.",
+    title3: "Backends Empresariales",
+    desc3:
+      "APIs robustas y seguras con Spring Boot + Hibernate. Listas para integrarse a sistemas corporativos cr\u00edticos.",
+  },
+  featured: {
+    eyebrow: "System / 02 \u00b7 Trabajo",
+    heading: "Casos de estudio",
+    description:
+      "Problema, arquitectura t\u00e9cnica y resultados medibles. Sin marketing, solo lo que se construy\u00f3 y qu\u00e9 pas\u00f3.",
+    featured: "\u2605 Destacado",
+    viewAll: "Ver todos los proyectos",
+    viewCase: "Ver caso de estudio",
+    caseStudyRef: "case_study/{code}",
+  },
+  skills: {
+    eyebrow: "System / 03 \u00b7 Stack",
+    heading: "Ecosistemas y herramientas",
+    description:
+      "Tecnolog\u00edas que uso a diario, agrupadas por ecosistema. La barra indica profundidad de uso real en producci\u00f3n.",
+    hoverHint: "Hover o click para detalle",
+    placeholder:
+      "\u25b8 Pasa el cursor sobre una tecnolog\u00eda para ver su descripci\u00f3n.",
+    levelExpert: "Experto",
+    levelAdvanced: "Avanzado",
+    levelIntermediate: "Intermedio",
+  },
+  process: {
+    eyebrow: "System / 04 \u00b7 Proceso",
+    heading: "De idea a producci\u00f3n",
+    description:
+      "Tres fases. Sin black boxes, sin sorpresas en la factura, sin code que nadie puede mantener.",
+    phase: "phase {n}/3",
+    deliverables: "Entregables",
+    cycle:
+      "Ciclo completo t\u00edpico: 6\u201312 semanas \u00b7 Demo semanal garantizada",
+    step1Title: "Discovery",
+    step1Desc:
+      "Una llamada de 45 min donde mapeamos el problema, las restricciones t\u00e9cnicas y los criterios de \u00e9xito. Salimos con un documento de una p\u00e1gina: objetivo, alcance y qu\u00e9 no vamos a construir.",
+    step1Art1: "Brief t\u00e9cnico",
+    step1Art2: "Definici\u00f3n de \u00e9xito",
+    step1Art3: "Estimaci\u00f3n por rangos",
+    step2Title: "Build",
+    step2Desc:
+      "Iteraciones de 1\u20132 semanas con demo al final de cada ciclo. C\u00f3digo revisable desde el d\u00eda uno, despliegue continuo a staging y comunicaci\u00f3n diaria en texto o Loom. Sin black boxes.",
+    step2Art1: "Repo privado",
+    step2Art2: "Staging URL",
+    step2Art3: "Demo semanal",
+    step3Title: "Ship",
+    step3Desc:
+      "Despliegue a producci\u00f3n, documentaci\u00f3n operativa y handoff opcional a tu equipo. Quince d\u00edas de soporte post-launch incluidos para cubrir aristas que solo aparecen con usuarios reales.",
+    step3Art1: "Despliegue prod",
+    step3Art2: "Runbook",
+    step3Art3: "15 d\u00edas de soporte",
+  },
+  demos: {
+    eyebrow: "System / 05 \u00b7 Demo",
+    heading: "Demo en vivo",
+    description:
+      "Una mini-app Tauri compilada para Windows, macOS y Linux. Binarios nativos, arranque instant\u00e1neo.",
+    buildStable: "Build stable",
+    binary: "~8MB binario",
+    stack: "Rust 1.74 \u00b7 Tauri 2.0",
+  },
+  contact: {
+    eyebrow: "System / 06 \u00b7 Contacto \u00b7 Available for work",
+    heading1: "Hablemos de tu",
+    heading2: "proyecto",
+    description:
+      "Estoy disponible para proyectos freelance y colaboraciones con startups. El email es la v\u00eda m\u00e1s r\u00e1pida: escr\u00edbeme y te respondo en menos de 24\u00a0h.",
+    runCommand: "Ejecuta el comando",
+    sendEmail: "Enviar email",
+    downloadCV: "Descargar CV",
+    systemStatus: "Status del sistema",
+    availability: "disponibilidad",
+    available: "available",
+    response: "respuesta",
+    responseValue: "< 24h",
+    timezone: "timezone",
+    timezoneValue: "CET (UTC+1)",
+    languages: "idiomas",
+    languagesValue: "ES \u00b7 EN",
+    modality: "modalidad",
+    modalityValue: "remote / async",
+    alsoOn: "Tambi\u00e9n en",
+  },
+  footer: {
+    description:
+      "especializado en TypeScript, Rust/Tauri y Java/Spring Boot. Construyendo software production-ready desde 2017.",
+    availableFor: "Available for Q1 2025 projects",
+    navigation: "Navegaci\u00f3n",
+    social: "Redes",
+    builtWith: "built with Astro + Tailwind",
+    allOperational: "all systems operational",
+    sourceCode: "source code \u2192",
+  },
+  "404": {
+    error: "SYS::ERROR_404",
+    title: "Ruta no encontrada",
+    description:
+      "La p\u00e1gina que buscas no existe, fue movida o la URL es incorrecta. No hay nada aqu\u00ed que pueda ayudarte.",
+    cd: "cd /",
+    hint: "recomendado: volver al inicio",
+    goHome: "Volver al inicio",
+    exploreProjects: "Explorar proyectos",
+  },
+  projects: {
+    eyebrow: "Archive \u00b7 Casos de estudio",
+    heading: "Todos los proyectos",
+    description:
+      "Una selecci\u00f3n de trabajos organizados por tipo de soluci\u00f3n. Cada caso documenta el problema, la arquitectura t\u00e9cnica y los resultados medibles.",
+    caseRef: "caso/{code}",
+    view: "Ver",
+    featuredBadge: "\u2605 Destacado",
+    backToProjects: "Volver a proyectos",
+    caseStudy: "Caso de estudio",
+    solutionType: "Tipo de soluci\u00f3n",
+    client: "Cliente",
+    duration: "Duraci\u00f3n",
+    stack: "Stack",
+    tech: "tech",
+    techs: "techs",
+    techStack: "Stack t\u00e9cnico",
+    problem: "Problema",
+    solution: "Soluci\u00f3n",
+    results: "Resultados",
+    availableFor: "Available for work",
+    buildSimilar: "\u00bfQuieres construir algo similar?",
+    ctaText:
+      "Hablemos de tu proyecto. El email es la forma m\u00e1s r\u00e1pida de contactarme.",
+    startConversation: "Iniciar conversaci\u00f3n",
+    relatedCases: "Casos relacionados",
+  },
+  stats: {
+    label1: "A\u00f1os construyendo software",
+    hint1: "Production-ready desde 2017",
+    label2: "Proyectos enviados a producci\u00f3n",
+    hint2: "Startups, B2B, fintech, IoT",
+    label3: "Tiempo medio de respuesta",
+    hint3: "V\u00eda email \u00b7 timezone CET",
+    label4: "Ecosistemas que domino",
+    hint4: "TypeScript \u00b7 Rust \u00b7 Java",
+  },
+  siteConfig: {
+    name: "DevPortfolio",
+    shortName: "Portfolio",
+    title:
+      "Tu Nombre \u2014 Fullstack Developer | TypeScript \u00b7 Rust \u00b7 Java",
+    description:
+      "Desarrollador Fullstack especializado en TypeScript, Rust/Tauri y Java/Spring Boot. Casos de estudio de aplicaciones web, desktop y backends empresariales.",
+    author: "Tu Nombre",
+    role: "Fullstack Developer",
+  },
+  "skills.tech": {
+    react: "UIs componentales con hooks y server components. Optimización de renders y arquitectura de estado escalable.",
+    astro: "SSG e islas para sitios ultrarrápidos. SEO técnico y Core Web Vitals en verde.",
+    nestjs: "Backends modulares con DI y decoradores. Guards, interceptors y arquitectura hexagonal.",
+    tanstack: "Meta-framework fullstack tipado. File-based routing con tipos end-to-end.",
+    express: "APIs REST minimalistas y middleware chains. Para servicios pequeños que no necesitan framework.",
+    tauri: "Apps desktop con backend Rust y frontend web. Binarios de 5–15MB, arranque instantáneo, acceso al sistema.",
+    tokio: "Runtime async para I/O de alta concurrencia. Tasks, channels y backpressure.",
+    serde: "Serialización/deserialización tipada con derive macros. Zero-copy cuando importa el rendimiento.",
+    springboot: "Microservicios y APIs empresariales. Autoconfiguración, profiles, actuator y métricas out-of-the-box.",
+    maven: "Build y gestión de dependencias. Multi-module setups y releases reproducibles.",
+    hibernate: "ORM con JPA y HQL. Optimización de N+1, lazy loading y caches de segundo nivel.",
+  },
+  themeToggle: {
+    lightMode: "Activar modo claro",
+    darkMode: "Activar modo oscuro",
+    lightTitle: "Modo claro",
+    darkTitle: "Modo oscuro",
+  },
+  social: {
+    github: "GitHub",
+    linkedin: "LinkedIn",
+    x: "X (Twitter)",
+    githubHandle: "github.com/tu-usuario",
+    linkedinHandle: "in/tu-usuario",
+    xHandle: "@tu_usuario",
+  },
+} satisfies Record<string, Record<string, string>>;
+
+export default es;

@@ -1,0 +1,80 @@
+---
+import BaseLayout from "@components/layouts/BaseLayout.astro";
+import Button from "@components/ui/Button.astro";
+import Icon from "@components/ui/Icon.astro";
+import { t, type Locale } from "@i18n/index";
+
+const locale = (Astro.currentLocale ?? "en") as Locale;
+---
+
+<BaseLayout
+    title={`404 — ${t("404.title", locale)}`}
+    noindex
+    locale={locale}
+>
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-24 md:py-32">
+        <div class="flex flex-col md:flex-row md:items-center md:gap-12">
+            <div class="shrink-0 mb-8 md:mb-0">
+                <div class="card-wrapper inline-block">
+                    <div
+                        class="card-inner geom-cut-lg relative overflow-hidden"
+                        style="padding: var(--cut-size-lg);"
+                    >
+                        <div
+                            class="absolute -top-10 -right-10 pointer-events-none"
+                            style="width:200px;height:200px;background:radial-gradient(circle, oklch(0.65 0.2 25 / 0.2) 0%, transparent 70%);"
+                        >
+                        </div>
+                        <span
+                            class="relative tracking-tight leading-none"
+                            style="font-family: var(--font-display); font-size: clamp(6rem, 15vw, 10rem); color: var(--text-primary); display: block; line-height: 0.85; font-weight: 800;"
+                        >
+                            4
+                            <span style="color: var(--accent-danger);">0</span>
+                            4
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1">
+                <p class="eyebrow eyebrow-accent mb-4 inline-flex">
+                    <span
+                        class="status-dot"
+                        style="background-color: var(--accent-danger);"></span>
+                    {t("404.error", locale)}
+                </p>
+                <h1
+                    class="text-2xl md:text-3xl font-bold mb-4"
+                    style="color: var(--text-primary);"
+                >
+                    {t("404.title", locale)}
+                </h1>
+                <p
+                    class="text-base mb-8 max-w-md text-secondary leading-relaxed"
+                >
+                    {t("404.description", locale)}
+                </p>
+
+                <div
+                    class="mb-8 inline-flex items-center gap-3 px-3 py-2 font-mono text-xs"
+                    style="background-color: var(--card); border: 1px solid var(--border-default); border-radius: var(--radius-soft); color: var(--text-disabled);"
+                >
+                    <span style="color: var(--accent-danger);">$</span>
+                    <span>{t("404.cd", locale)}</span>
+                    <span style="color: var(--accent-primary);">→</span>
+                    <span>{t("404.hint", locale)}</span>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <Button href={`/${locale}/`} variant="cta">
+                        <Icon name="arrow" size={16} class="rotate-180" />
+                        {t("404.goHome", locale)}
+                    </Button>
+                    <Button href={`/${locale}/proyectos`} variant="secondary">
+                        {t("404.exploreProjects", locale)}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

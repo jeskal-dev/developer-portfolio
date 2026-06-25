@@ -1,0 +1,18 @@
+---
+interface Props {
+    variant?: "primary" | "success" | "warning";
+    class?: string;
+}
+const { variant = "primary", class: className = "" } = Astro.props;
+const variantRecord = {
+    primary: "badge-primary",
+    success: "badge-success",
+    warning: "badge-warning",
+};
+
+const variantClass = variantRecord[variant];
+---
+
+<span class:list={[`badge geom-cut-sm`, variantClass, className]}>
+    <slot />
+</span>
